@@ -1,0 +1,9 @@
+# mysql config [require true]
+mysql:
+  host: 'example.com'
+  port: 3306
+  user: 'username'
+  passwd: 'password'
+  db: 'database'
+
+
