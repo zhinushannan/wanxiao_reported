@@ -110,10 +110,6 @@ servers:
         <<: *default # 引用默认中间件
       # 反向HTTP POST地址列表
       post:
-      # - url: '127.0.0.1:5701' # 地址
-      #   secret: '18762237071'           # 密钥
-      #- url: 118.31.42.37:5701 # 地址
-      #  secret: ''          # 密钥
   # 反向WS设置
   - ws-reverse:
       # 反向WS Universal 地址
