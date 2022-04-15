@@ -3,8 +3,8 @@
 
 import nonebot
 from nonebot.adapters.onebot.v11 import Adapter as ONEBOT_V11Adapter
-from nonebot.adapters.cqhttp import Bot as CQHTTPBot
-
+from nonebot.adapters.cqhttp import Adapter as CQHTTP_Adapter
+# from onebot.v11 import Adapter as ONEBOT_V11Adapter
 # Custom your logger
 # 
 # from nonebot.log import logger, default_format

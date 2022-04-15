@@ -115,6 +115,7 @@ servers:
       # 反向WS Universal 地址
       # 注意 设置了此项地址后下面两项将会被忽略
       universal: ws://127.0.0.1:8000/onebot/v11/ws
+#      universal: ws://49.234.28.122:8088/onebot/v11/ws
       # 反向WS API 地址
       # api: ws://your_websocket_api.server
       # 反向WS Event 地址
