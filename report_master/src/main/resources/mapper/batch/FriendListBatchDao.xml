@@ -74,8 +74,8 @@
     insert into friend_list (bot_id, user_id, nickname, remark, mark)
     values
     <foreach collection="friendList" item="item" index="index" separator=",">
-      (#{botId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
-      #{mark,jdbcType=VARCHAR})
+      (#{item.botId,jdbcType=VARCHAR}, #{item.userId,jdbcType=VARCHAR}, #{item.nickname,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR},
+      #{item.mark,jdbcType=VARCHAR})
     </foreach>
     ON DUPLICATE KEY UPDATE
     nickname = values(nickname), remark = values(remark), mark = values(mark)

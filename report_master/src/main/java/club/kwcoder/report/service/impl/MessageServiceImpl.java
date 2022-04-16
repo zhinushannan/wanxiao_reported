@@ -1,6 +1,6 @@
 package club.kwcoder.report.service.impl;
 
-import club.kwcoder.report.bean.ResultBean;
+import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.dto.MessageDTO;
 import club.kwcoder.report.mapper.MessageDao;
 import club.kwcoder.report.service.MessageService;
@@ -22,5 +22,6 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public ResultBean<String> sendGroupMessage(MessageDTO message) {
         System.out.println(message);
-        return null;    }
+        return null;
+    }
 }

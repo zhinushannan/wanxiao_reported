@@ -39,8 +39,12 @@ public class BotStatusTask {
                 e.printStackTrace();
                 flag = false;
             }
-            if (!flag) {
+            if (!flag && bot.getStatus() == 1) {
                 bot.setStatus(0);
+                botDao.updateByPrimaryKey(bot);
+            }
+            if (flag && bot.getStatus() == 0) {
+                bot.setStatus(1);
                 botDao.updateByPrimaryKey(bot);
             }
         });

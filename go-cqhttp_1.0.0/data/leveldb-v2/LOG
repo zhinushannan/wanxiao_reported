@@ -142,3 +142,12 @@
 14:20:28.776941 table@remove removed @20
 14:20:28.777109 table@remove removed @17
 14:20:28.777161 table@remove removed @14
+=============== Apr 16, 2022 (CST) ===============
+15:24:51.126111 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:24:51.126414 version@stat F·[0 1] S·22KiB[0B 22KiB] Sc·[0.00 0.00]
+15:24:51.126433 db@open opening
+15:24:51.126489 journal@recovery F·1
+15:24:51.126527 journal@recovery recovering @32
+15:24:51.126718 version@stat F·[0 1] S·22KiB[0B 22KiB] Sc·[0.00 0.00]
+15:24:51.155013 db@janitor F·3 G·0
+15:24:51.155096 db@open done T·28.647073ms
