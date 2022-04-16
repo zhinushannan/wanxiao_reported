@@ -1,0 +1,427 @@
+
+
+
+settings.projectPath = /home/zhinushannan/CODE/wanxiao_reported/report_master
+settings.javaPath = src/main/java
+settings.sourcesPath = src/main/resources
+settings.entitySuffix = 
+settings.daoSuffix = Dao
+settings.serviceSuffix = Service
+settings.controllerSuffix = Controller
+settings.entityPackage = club.kwcoder.report.dataobject
+settings.daoPackage = club.kwcoder.report.mapper
+settings.servicePackage = club.kwcoder.report.service
+settings.controllerPackage = club.kwcoder.report.controller
+settings.xmlPackage = mapper
+
+developer.author = 
+developer.email = 
+
+===================================================
+gen.setFilename(p1)
+gen.setFilepath(p1)
+gen.setType(p1): p1 = entity/dao/service/serviceImpl/controller/xml
+
+Not Set gen.setType() , Default Filename: entity.name + ".java"
+Not Set gen.setType() , Default Filepath: settings.sourcesPath + "temp"
+Not Set gen.setType() , Default Full Path: settings.sourcesPath + "temp" + entity.name + ".java"
+
+# RULE: settings.javaPath + settings.XXXPackage + entity.name.XXX + settings.XXXSuffix + ".java"
+gen.setType("entity") = settings.javaPath + settings.entityPackage + entity.name + settings.entitySuffix + ".java"
+gen.setType("dao") = settings.javaPath + settings.daoPackage + entity.name + settings.daoSuffix + ".java"
+gen.setType("service") = settings.javaPath + settings.servicePackage + entity.name + settings.serviceSuffix + ".java"
+gen.setType("serviceImpl") = settings.javaPath + settings.serviceImplPackage + ".impl/" + entity.name + settings.serviceSuffix + "Impl.java"
+gen.setType("controller") = settings.javaPath + settings.controllerPackage + entity.name + settings.controllerSuffix + ".java"
+gen.setType("xml") = settings.sourcesPath + settings.xmlPackage + entity.name + settings.daoSuffix + ".xml"
+
+gen.setFilepath("src/main/java/com.test") and gen.setFilename("User.java") = src/main/java/com.test/User.java
+Only Call gen.setFilepath("src/main/java/com.test") = "src/main/java/com.test/" + entity.name + ".java"
+Only Call gen.setFilename("User.java") = settings.sourcesPath + "temp/User.java"
+
+===================================================
+date = 2022-04-16T10:08:21.007+08:00
+date.toString("yyyy-MM-dd HH:mm:ss") = 2022-04-16 10:08:21
+date.now().toString("yyyy-MM-dd HH:mm:ss") = 2022-04-16 10:08:21
+
+===================================================
+include "file-name.ext" OR include "/file-name.ext"
+the file must at:
+1. "{project.dir}/.idea/generator/templates"
+2. "{project.dir}/generator/templates"
+3. "{idea.config.path}/extensions/com.github.houkunlin.database.generator/generator/templates"
+
+===================================================
+entity.packages = "import java.time.LocalDateTime;
+"
+entity.packages.entity = club.kwcoder.report.dataobject
+entity.packages.entity.pack = club.kwcoder.report.dataobject
+entity.packages.entity.full = club.kwcoder.report.dataobject.Message
+entity.packages.service = club.kwcoder.report.service
+entity.packages.service.pack = club.kwcoder.report.service
+entity.packages.service.full = club.kwcoder.report.service.MessageService
+entity.packages.serviceImpl = club.kwcoder.report.service.impl
+entity.packages.serviceImpl.pack = club.kwcoder.report.service.impl
+entity.packages.serviceImpl.full = club.kwcoder.report.service.impl.MessageServiceImpl
+entity.packages.dao = club.kwcoder.report.mapper
+entity.packages.dao.pack = club.kwcoder.report.mapper
+entity.packages.dao.full = club.kwcoder.report.mapper.MessageDao
+entity.packages.controller = club.kwcoder.report.controller
+entity.packages.controller.pack = club.kwcoder.report.controller
+entity.packages.controller.full = club.kwcoder.report.controller.MessageController
+
+entity.name = Message
+entity.name.firstUpper = Message
+entity.name.firstLower = message
+entity.name.entity = Message
+entity.name.entity.firstUpper = Message
+entity.name.entity.firstLower = message
+entity.name.service = MessageService
+entity.name.service.firstUpper = MessageService
+entity.name.service.firstLower = messageService
+entity.name.serviceImpl = MessageServiceImpl
+entity.name.serviceImpl.firstUpper = MessageServiceImpl
+entity.name.serviceImpl.firstLower = messageServiceImpl
+entity.name.dao = MessageDao
+entity.name.dao.firstUpper = MessageDao
+entity.name.dao.firstLower = messageDao
+entity.name.controller = MessageController
+entity.name.controller.firstUpper = MessageController
+entity.name.controller.firstLower = messageController
+
+entity.comment = 使用机器人发送的消息
+entity.uri = message
+
+table.name = message
+table.comment = 使用机器人发送的消息
+
+primary.field.name = id
+primary.field.name.firstUpper = Id
+primary.field.name.firstLower = id
+primary.field.comment = 
+primary.field.typeName = Long
+(primary.field.dataType.length)!'null' = -1
+(primary.field.dataType.precision)!'null' = -1
+(primary.field.dataType.scale)!'null' = 0
+(primary.field.dataType.specification)!'null' = bigint
+primary.field.fullTypeName = java.lang.Long
+primary.field.primaryKey = true
+primary.field.selected = true
+
+primary.column.name = id
+primary.column.comment = 
+primary.column.typeName = bigint
+(primary.column.dataType.length)!'null' = -1
+(primary.column.dataType.precision)!'null' = -1
+(primary.column.dataType.scale)!'null' = 0
+(primary.column.dataType.specification)!'null' = bigint
+primary.column.fullTypeName = bigint
+primary.column.primaryKey = true
+primary.column.selected = true
+
+# primary.fields is Array
+# list primary.fields as field
+
+# primary.columns is Array
+# list primary.columns as column
+
+
+=======================================================================================================================
+# fields is Array
+# list fields as field
+field.name = id
+field.name.firstUpper = Id
+field.name.firstLower = id
+field.comment = 
+field.typeName = Long
+field.fullTypeName = java.lang.Long
+field.dataType.length = -1
+field.dataType.precision = -1
+field.dataType.scale = 0
+field.dataType.specification = bigint
+field.primaryKey = true
+field.selected = true
+--------------------------
+field.column.name = id
+field.column.comment = 
+field.column.typeName = bigint
+field.column.fullTypeName = bigint
+field.column.dataType.length = -1
+field.column.dataType.precision = -1
+field.column.dataType.scale = 0
+field.column.dataType.specification = bigint
+field.column.primaryKey = true
+field.column.selected = true
+---
+field.name = botId
+field.name.firstUpper = BotId
+field.name.firstLower = botId
+field.comment = 
+field.typeName = String
+field.fullTypeName = java.lang.String
+field.dataType.length = 255
+field.dataType.precision = 255
+field.dataType.scale = 0
+field.dataType.specification = varchar(255)
+field.primaryKey = false
+field.selected = true
+--------------------------
+field.column.name = bot_id
+field.column.comment = 
+field.column.typeName = varchar
+field.column.fullTypeName = varchar(255)
+field.column.dataType.length = 255
+field.column.dataType.precision = 255
+field.column.dataType.scale = 0
+field.column.dataType.specification = varchar(255)
+field.column.primaryKey = false
+field.column.selected = true
+---
+field.name = message
+field.name.firstUpper = Message
+field.name.firstLower = message
+field.comment = 
+field.typeName = String
+field.fullTypeName = java.lang.String
+field.dataType.length = 255
+field.dataType.precision = 255
+field.dataType.scale = 0
+field.dataType.specification = varchar(255)
+field.primaryKey = false
+field.selected = true
+--------------------------
+field.column.name = message
+field.column.comment = 
+field.column.typeName = varchar
+field.column.fullTypeName = varchar(255)
+field.column.dataType.length = 255
+field.column.dataType.precision = 255
+field.column.dataType.scale = 0
+field.column.dataType.specification = varchar(255)
+field.column.primaryKey = false
+field.column.selected = true
+---
+field.name = targetId
+field.name.firstUpper = TargetId
+field.name.firstLower = targetId
+field.comment = 发送目标，可能是群组也可能是私信，为群号或QQ账号
+
+field.typeName = String
+field.fullTypeName = java.lang.String
+field.dataType.length = 255
+field.dataType.precision = 255
+field.dataType.scale = 0
+field.dataType.specification = varchar(255)
+field.primaryKey = false
+field.selected = true
+--------------------------
+field.column.name = target_id
+field.column.comment = 发送目标，可能是群组也可能是私信，为群号或QQ账号
+
+field.column.typeName = varchar
+field.column.fullTypeName = varchar(255)
+field.column.dataType.length = 255
+field.column.dataType.precision = 255
+field.column.dataType.scale = 0
+field.column.dataType.specification = varchar(255)
+field.column.primaryKey = false
+field.column.selected = true
+---
+field.name = type
+field.name.firstUpper = Type
+field.name.firstLower = type
+field.comment = 0是群组，1是私信
+field.typeName = Integer
+field.fullTypeName = java.lang.Integer
+field.dataType.length = -1
+field.dataType.precision = -1
+field.dataType.scale = 0
+field.dataType.specification = int
+field.primaryKey = false
+field.selected = true
+--------------------------
+field.column.name = type
+field.column.comment = 0是群组，1是私信
+field.column.typeName = int
+field.column.fullTypeName = int
+field.column.dataType.length = -1
+field.column.dataType.precision = -1
+field.column.dataType.scale = 0
+field.column.dataType.specification = int
+field.column.primaryKey = false
+field.column.selected = true
+---
+field.name = sendTime
+field.name.firstUpper = SendTime
+field.name.firstLower = sendTime
+field.comment = 
+field.typeName = LocalDateTime
+field.fullTypeName = java.time.LocalDateTime
+field.dataType.length = -1
+field.dataType.precision = -1
+field.dataType.scale = 0
+field.dataType.specification = datetime
+field.primaryKey = false
+field.selected = true
+--------------------------
+field.column.name = send_time
+field.column.comment = 
+field.column.typeName = datetime
+field.column.fullTypeName = datetime
+field.column.dataType.length = -1
+field.column.dataType.precision = -1
+field.column.dataType.scale = 0
+field.column.dataType.specification = datetime
+field.column.primaryKey = false
+field.column.selected = true
+---
+
+
+=======================================================================================================================
+# columns is Array
+# list columns as column
+column.name = id
+column.comment = 
+column.typeName = bigint
+column.fullTypeName = bigint
+column.dataType.length = -1
+column.dataType.precision = -1
+column.dataType.scale = 0
+column.dataType.specification = bigint
+column.primaryKey = true
+column.selected = true
+--------------------------
+column.field.name = id
+column.field.name.firstUpper = Id
+column.field.name.firstLower = id
+column.field.comment = 
+column.field.typeName = Long
+column.field.fullTypeName = java.lang.Long
+column.field.dataType.length = -1
+column.field.dataType.precision = -1
+column.field.dataType.scale = 0
+column.field.dataType.specification = bigint
+column.field.primaryKey = true
+column.field.selected = true
+---
+column.name = bot_id
+column.comment = 
+column.typeName = varchar
+column.fullTypeName = varchar(255)
+column.dataType.length = 255
+column.dataType.precision = 255
+column.dataType.scale = 0
+column.dataType.specification = varchar(255)
+column.primaryKey = false
+column.selected = true
+--------------------------
+column.field.name = botId
+column.field.name.firstUpper = BotId
+column.field.name.firstLower = botId
+column.field.comment = 
+column.field.typeName = String
+column.field.fullTypeName = java.lang.String
+column.field.dataType.length = 255
+column.field.dataType.precision = 255
+column.field.dataType.scale = 0
+column.field.dataType.specification = varchar(255)
+column.field.primaryKey = false
+column.field.selected = true
+---
+column.name = message
+column.comment = 
+column.typeName = varchar
+column.fullTypeName = varchar(255)
+column.dataType.length = 255
+column.dataType.precision = 255
+column.dataType.scale = 0
+column.dataType.specification = varchar(255)
+column.primaryKey = false
+column.selected = true
+--------------------------
+column.field.name = message
+column.field.name.firstUpper = Message
+column.field.name.firstLower = message
+column.field.comment = 
+column.field.typeName = String
+column.field.fullTypeName = java.lang.String
+column.field.dataType.length = 255
+column.field.dataType.precision = 255
+column.field.dataType.scale = 0
+column.field.dataType.specification = varchar(255)
+column.field.primaryKey = false
+column.field.selected = true
+---
+column.name = target_id
+column.comment = 发送目标，可能是群组也可能是私信，为群号或QQ账号
+
+column.typeName = varchar
+column.fullTypeName = varchar(255)
+column.dataType.length = 255
+column.dataType.precision = 255
+column.dataType.scale = 0
+column.dataType.specification = varchar(255)
+column.primaryKey = false
+column.selected = true
+--------------------------
+column.field.name = targetId
+column.field.name.firstUpper = TargetId
+column.field.name.firstLower = targetId
+column.field.comment = 发送目标，可能是群组也可能是私信，为群号或QQ账号
+
+column.field.typeName = String
+column.field.fullTypeName = java.lang.String
+column.field.dataType.length = 255
+column.field.dataType.precision = 255
+column.field.dataType.scale = 0
+column.field.dataType.specification = varchar(255)
+column.field.primaryKey = false
+column.field.selected = true
+---
+column.name = type
+column.comment = 0是群组，1是私信
+column.typeName = int
+column.fullTypeName = int
+column.dataType.length = -1
+column.dataType.precision = -1
+column.dataType.scale = 0
+column.dataType.specification = int
+column.primaryKey = false
+column.selected = true
+--------------------------
+column.field.name = type
+column.field.name.firstUpper = Type
+column.field.name.firstLower = type
+column.field.comment = 0是群组，1是私信
+column.field.typeName = Integer
+column.field.fullTypeName = java.lang.Integer
+column.field.dataType.length = -1
+column.field.dataType.precision = -1
+column.field.dataType.scale = 0
+column.field.dataType.specification = int
+column.field.primaryKey = false
+column.field.selected = true
+---
+column.name = send_time
+column.comment = 
+column.typeName = datetime
+column.fullTypeName = datetime
+column.dataType.length = -1
+column.dataType.precision = -1
+column.dataType.scale = 0
+column.dataType.specification = datetime
+column.primaryKey = false
+column.selected = true
+--------------------------
+column.field.name = sendTime
+column.field.name.firstUpper = SendTime
+column.field.name.firstLower = sendTime
+column.field.comment = 
+column.field.typeName = LocalDateTime
+column.field.fullTypeName = java.time.LocalDateTime
+column.field.dataType.length = -1
+column.field.dataType.precision = -1
+column.field.dataType.scale = 0
+column.field.dataType.specification = datetime
+column.field.primaryKey = false
+column.field.selected = true
+---
