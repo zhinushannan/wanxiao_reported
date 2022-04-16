@@ -4,8 +4,11 @@ import club.kwcoder.report.dataobject.FriendList;
 import club.kwcoder.report.dataobject.FriendListExample;
 import club.kwcoder.report.dataobject.FriendListKey;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface FriendListDao {
     long countByExample(FriendListExample example);
 

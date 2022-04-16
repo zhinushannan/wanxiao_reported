@@ -1,7 +1,7 @@
 package club.kwcoder.report.service;
 
 import club.kwcoder.report.model.bean.ResultBean;
-import club.kwcoder.report.dto.MessageDTO;
+import club.kwcoder.report.model.dto.MessageDTO;
 
 public interface MessageService {
 

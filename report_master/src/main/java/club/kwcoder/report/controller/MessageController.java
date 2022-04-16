@@ -1,7 +1,7 @@
 package club.kwcoder.report.controller;
 
 import club.kwcoder.report.model.bean.ResultBean;
-import club.kwcoder.report.dto.MessageDTO;
+import club.kwcoder.report.model.dto.MessageDTO;
 import club.kwcoder.report.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

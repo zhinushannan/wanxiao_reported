@@ -1,4 +1,4 @@
-package club.kwcoder.report.dto;
+package club.kwcoder.report.model.dto;
 
 import lombok.Data;
 

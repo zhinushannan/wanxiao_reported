@@ -3,6 +3,7 @@ package club.kwcoder.report.controller;
 import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.dataobject.BotRequest;
+import club.kwcoder.report.model.dto.FriendRequestDTO;
 import club.kwcoder.report.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,16 @@ public class RequestController {
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public ResultBean<PageBean<BotRequest>> list(@RequestBody PageBean<BotRequest> pageBean) {
         return requestService.list(pageBean);
+    }
+
+    @RequestMapping(value = "/friend", method = RequestMethod.POST)
+    public ResultBean<String> friendRequest(@RequestBody FriendRequestDTO friendRequest) {
+        return requestService.friendRequest(friendRequest);
+    }
+
+    @RequestMapping(value = "/group", method = RequestMethod.POST)
+    public ResultBean<String> groupRequest() {
+        return null;
     }
 
 }

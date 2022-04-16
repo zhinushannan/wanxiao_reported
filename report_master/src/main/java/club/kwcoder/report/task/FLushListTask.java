@@ -45,7 +45,7 @@ public class FLushListTask {
      * 先从数据库中获取机器人列表，获取到机器人的qq号(botId)和端口号
      */
     @Scheduled(fixedRate = 600000)
-    public void friendListFlushTask() {
+    public void listFlushTask() {
         BotExample botExample = new BotExample();
         botDao.selectByExample(botExample).forEach(bot -> {
             groupFlushList(bot.getBotId(), bot.getPort());
@@ -99,9 +99,11 @@ public class FLushListTask {
                     redisUtil.setString(baseKey + friend.getUser_id(), friend.toString());
                     friendLists.add(
                             new FriendList()
+                                    .setBotId(botId)
                                     .setNickname(friend.getNickname())
                                     .setNickname(friend.getUser_id())
                                     .setUserId(friend.getUser_id())
+                                    .setRemark(friend.getRemark())
                     );
                 }
             });

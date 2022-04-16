@@ -4,8 +4,11 @@ import club.kwcoder.report.dataobject.GroupList;
 import club.kwcoder.report.dataobject.GroupListExample;
 import club.kwcoder.report.dataobject.GroupListKey;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface GroupListDao {
     long countByExample(GroupListExample example);
 
