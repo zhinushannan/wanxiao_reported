@@ -8,7 +8,7 @@ import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.dataobject.BotRequest;
 import club.kwcoder.report.model.dto.FriendRequestDTO;
-import club.kwcoder.report.model.task.FriendModel;
+import club.kwcoder.report.service.ListFlush;
 import club.kwcoder.report.service.RequestService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -31,6 +31,9 @@ public class RequestServiceImpl implements RequestService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private ListFlush listFlush;
+
     @Override
     public ResultBean<PageBean<BotRequest>> list(PageBean<BotRequest> pageBean) {
         PageHelper.startPage(pageBean.getPage(), pageBean.getSize());
@@ -50,8 +53,21 @@ public class RequestServiceImpl implements RequestService {
 
         ResponseEntity<Object> forEntity = restTemplate.getForEntity(url, Object.class);
 
-        System.out.println(forEntity);
+        if (forEntity.hasBody()) {
+            BotRequestExample example = new BotRequestExample();
+            example.or().andFlagEqualTo(friendRequest.getFlag());
+            List<BotRequest> botRequests = botRequestDao.selectByExample(example);
 
-        return null;
+            example.clear();
+            example.or().andBotIdEqualTo(bot.getBotId()).andTargetIdEqualTo(botRequests.get(0).getTargetId());
+            botRequestDao.deleteByExample(example);
+        }
+
+        if (friendRequest.getApprove()) {
+            listFlush.friendFlushList(bot.getBotId(), bot.getPort());
+            return ResultBean.ok("已同意添加该好友！", "已同意添加该好友！");
+        }
+
+        return ResultBean.ok("已拒绝添加该好友！", "已拒绝添加该好友！");
     }
 }

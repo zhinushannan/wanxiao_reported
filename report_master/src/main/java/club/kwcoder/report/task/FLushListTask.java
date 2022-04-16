@@ -1,23 +1,11 @@
 package club.kwcoder.report.task;
 
-import club.kwcoder.report.dataobject.BotExample;
-import club.kwcoder.report.dataobject.FriendList;
-import club.kwcoder.report.dataobject.GroupList;
+import club.kwcoder.report.dataobject.*;
 import club.kwcoder.report.mapper.BotDao;
-import club.kwcoder.report.mapper.batch.FriendListBatchDao;
-import club.kwcoder.report.mapper.batch.GroupListBatchDao;
-import club.kwcoder.report.model.task.FriendModel;
-import club.kwcoder.report.model.task.GroupModel;
-import club.kwcoder.report.utils.RedisUtil;
-import org.apache.commons.lang.StringUtils;
+import club.kwcoder.report.service.ListFlush;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 定时任务：
@@ -27,16 +15,7 @@ import java.util.List;
 public class FLushListTask {
 
     @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private RedisUtil redisUtil;
-
-    @Autowired
-    private GroupListBatchDao groupListBatchDao;
-
-    @Autowired
-    private FriendListBatchDao friendListBatchDao;
+    private ListFlush listFlush;
 
     @Autowired
     private BotDao botDao;
@@ -48,69 +27,10 @@ public class FLushListTask {
     public void listFlushTask() {
         BotExample botExample = new BotExample();
         botDao.selectByExample(botExample).forEach(bot -> {
-            groupFlushList(bot.getBotId(), bot.getPort());
-            friendFlushList(bot.getBotId(), bot.getPort());
+            listFlush.groupFlushList(bot.getBotId(), bot.getPort());
+            listFlush.friendFlushList(bot.getBotId(), bot.getPort());
         });
     }
 
-    private void groupFlushList(String botId, int port) {
-        String url = "http://localhost:" + port + "/get_group_list";
-        ResponseEntity<GroupModel> groupList = restTemplate.getForEntity(url, GroupModel.class);
-        if (groupList.getBody() != null) {
-            GroupModel body = groupList.getBody();
-            List<GroupModel.Group> data = body.getData();
-
-            String baseKey = botId + ":group:";
-            List<GroupList> groupLists = new ArrayList<>();
-
-            data.forEach(group -> {
-                String groupFromRedis = redisUtil.getString(baseKey + group.getGroup_id());
-                if (!StringUtils.equals(groupFromRedis, group.toString())) {
-                    redisUtil.setString(baseKey + group.getGroup_id(), group.toString());
-                    groupLists.add(
-                            new GroupList()
-                                    .setGroupName(group.getGroup_name())
-                                    .setMaxMemberCount(group.getMax_member_count())
-                                    .setMemberCount(group.getMember_count())
-                                    .setBotId(botId)
-                                    .setGroupId(group.getGroup_id())
-                    );
-                }
-            });
-            if (groupLists.size() != 0) {
-                groupListBatchDao.insertAndUpdateBatch(groupLists);
-            }
-        }
-    }
-
-    private void friendFlushList(String botId, int port) {
-        String url = "http://localhost:" + port + "/get_friend_list";
-        ResponseEntity<FriendModel> friendList = restTemplate.getForEntity(url, FriendModel.class);
-        if (friendList.getBody() != null) {
-            FriendModel body = friendList.getBody();
-            List<FriendModel.Friend> data = body.getData();
-
-            String baseKey = botId + ":friend:";
-            List<FriendList> friendLists = new ArrayList<>();
-
-            data.forEach(friend -> {
-                String groupFromRedis = redisUtil.getString(baseKey + friend.getUser_id());
-                if (!StringUtils.equals(groupFromRedis, friend.toString())) {
-                    redisUtil.setString(baseKey + friend.getUser_id(), friend.toString());
-                    friendLists.add(
-                            new FriendList()
-                                    .setBotId(botId)
-                                    .setNickname(friend.getNickname())
-                                    .setNickname(friend.getUser_id())
-                                    .setUserId(friend.getUser_id())
-                                    .setRemark(friend.getRemark())
-                    );
-                }
-            });
-            if (friendLists.size() != 0) {
-                friendListBatchDao.insertAndUpdateBatch(friendLists);
-            }
-        }
-    }
 
 }

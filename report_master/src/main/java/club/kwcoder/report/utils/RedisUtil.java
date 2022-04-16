@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -66,7 +67,13 @@ public class RedisUtil {
         return redisTemplate.delete(k);
     }
 
-
+    /**
+     * 从 redis 中获取指定命名空间下所有的 key
+     * @return 返回 所有 key 的集合
+     */
+    public Set<String> getAllKeys(String preKeys) {
+        return redisTemplate.keys(preKeys + "*");
+    }
 
 
 }
