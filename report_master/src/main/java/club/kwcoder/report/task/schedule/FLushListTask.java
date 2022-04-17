@@ -1,4 +1,4 @@
-package club.kwcoder.report.task;
+package club.kwcoder.report.task.schedule;
 
 import club.kwcoder.report.dataobject.*;
 import club.kwcoder.report.mapper.BotDao;

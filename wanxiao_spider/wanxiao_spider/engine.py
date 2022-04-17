@@ -7,6 +7,8 @@ import redis
 from pymysql import OperationalError
 from redis import ResponseError, AuthenticationError
 
+import pika
+
 from handle_log import HandleLog
 
 from auto_reported import AutoReport
@@ -103,25 +105,38 @@ def get_remove():
 if __name__ == '__main__':
     # get connection to mysql
     try:
-        connect = pymysql.connect(host='localhost', port=3306,
+        connect_mysql = pymysql.connect(host='localhost', port=3306,
                               user='root', passwd='09140727', db='wanxiao')
     except OperationalError as e:
         log.error(e)
         sys.exit(-1)
     else:
         log.info("获取 Mysql 数据库链接成功！")
-    cursor = connect.cursor()
+    cursor = connect_mysql.cursor()
 
     try:
         redis = redis.Redis(host="127.0.0.1", port=6379, decode_responses=True)
         redis.info()
     except (ResponseError, AuthenticationError) as e:
         cursor.close()
-        connect.close()
+        connect_mysql.close()
         log.error(e)
         sys.exit(-1)
     else:
         log.info("获取 Redis 数据库链接成功！")
+
+    try:
+        connect_mq = pika.BlockingConnection(pika.ConnectionParameters(host="localhost", port=5672))
+        channel = connect_mq.channel()
+        channel.queue_declare("wanxiao_report")
+    except:
+        log.error("消息队列链接失败！")
+        channel.close()
+        connect_mq.close()
+        redis.close()
+        cursor.close()
+        connect_mysql.close()
+        sys.exit(-1)
 
     unfinished_clazz = get_unfinished_clazz()
     log.info(f"获取到未完成打卡的班级：{str(list(map(lambda x: x[0], unfinished_clazz)))}")
@@ -133,10 +148,12 @@ if __name__ == '__main__':
     for i in teacher_list:
         try:
             log.info(f"开始推送 [{i}]，{list(clazz_info[i]['clazz'].keys())}")
-            AutoReport(i, clazz_info[i]['account_data'], clazz_info[i]['clazz'], cursor, redis, remove_dict).run()
+            AutoReport(i, clazz_info[i]['account_data'], clazz_info[i]['clazz'], cursor, redis, remove_dict, channel).run()
         except Exception as e:
             log.error(e)
 
+    channel.close()
+    connect_mq.close()
     redis.close()
     cursor.close()
-    connect.close()
+    connect_mysql.close()

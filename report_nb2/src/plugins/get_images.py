@@ -1,24 +1,24 @@
-import datetime
-
-import pymysql
 from nonebot import on_message
-from nonebot.adapters.cqhttp import Bot, GroupMessageEvent
+from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent
 import requests
-from report_nb2.src.plugins import _settings
 import os
-import cv2
-import numpy as np
-from cnocr import CnOcr
+import datetime
 
 message_match = on_message()
 
 
 @message_match.handle()
 def get_message(bot: Bot, event: GroupMessageEvent):
-    print(bot.self_id)
+    if str(event.group_id) != "1030838056":
+        return
     url = str(event.message).split(",")[2].split("=")[1]
     img = requests.get(url).content
-    path = "/home/zhinushannan/Desktop/xxqg/0413/"
+
+    now = datetime.datetime.today()
+    today = f"{str(now.month).zfill(2)}{str(now.day).zfill(2)}"
+    path = f"/home/zhinushannan/Desktop/xxqg/{today}/"
+
+    print(path)
 
     if not os.path.exists(path):
         os.mkdir(path)
@@ -28,6 +28,7 @@ def get_message(bot: Bot, event: GroupMessageEvent):
     with open(path, "wb") as f:
         f.write(img)
 
-    os.system("python ../main.py " + path)
+    os.system("python ocr-xxqg/main.py " + path)
 
     pass
+

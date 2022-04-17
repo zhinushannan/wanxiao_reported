@@ -12,7 +12,7 @@ log = HandleLog()
 
 
 class AutoReport:
-    def __init__(self, teacher, account_info, clazz, cursor, redis, remove_dict):
+    def __init__(self, teacher, account_info, clazz, cursor, redis, remove_dict, channel):
         """
         :param teacher: teacher name
         :param account_info: {'username': username, 'securitycode': password, 'captcha': ''}
@@ -28,8 +28,9 @@ class AutoReport:
             }
         :param cursor: mysql cursor
         :param redis: redis
+        :param channel: mq channel
         """
-        self.teacher, self.account_info, self.clazz, self.cursor, self.redis, self.remove_dict = teacher, account_info, clazz, cursor, redis, remove_dict
+        self.teacher, self.account_info, self.clazz, self.cursor, self.redis, self.remove_dict, self.channel = teacher, account_info, clazz, cursor, redis, remove_dict, channel
         self.login_url = 'https://reported.17wanxiao.com/admin/login'
         self.headers = {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
@@ -102,12 +103,19 @@ class AutoReport:
         now = datetime.datetime.now()
         return msg + f'\n{now.hour}:{now.minute}:{now.second}'
 
-    def send_msg(self, group_id, msg, delete, bot_id):
-        if delete:
-            message_id = str(self.redis.get(f"message_id:{group_id}"))
-            # log.debug(f"发送消息 : http://127.0.0.1:{bot_id}/delete_msg?message_id={message_id}")
-            # requests.get(f"http://127.0.0.1:{bot_id}/delete_msg?message_id=" + message_id)
-            time.sleep(5)
+    def push_msg(self, group_id, msg, delete, bot_id):
+        message = {
+            "groupId": group_id,
+            "msg": msg,
+            "delete": delete,
+            "port": bot_id,
+        }
+        message_str = json.dumps(message)
+        self.channel.basic_publish(exchange="", routing_key='wanxiao_report', body=message_str.encode())
+
+        # log.debug(f"发送消息 : http://127.0.0.1:{bot_id}/delete_msg?message_id={message_id}")
+        # requests.get(f"http://127.0.0.1:{bot_id}/delete_msg?message_id=" + message_id)
+        # time.sleep(5)
         # log.debug(f"http://127.0.0.1:{bot_id}/send_group_msg?group_id={group_id}&message={msg}")
         # requests.get(f"http://127.0.0.1:{bot_id}/send_group_msg?group_id={group_id}&message={msg}")
 
@@ -133,7 +141,7 @@ class AutoReport:
                 sys.exit(-1)
             log.debug(f"{self.clazz[i]['group_id']} \n {msg} \n {self.clazz[i]['delete']} \n {str(self.clazz[i]['bot_id'])}")
             try:
-                self.send_msg(str(self.clazz[i]["group_id"]), msg, self.clazz[i]["delete"],
+                self.push_msg(str(self.clazz[i]["group_id"]), msg, self.clazz[i]["delete"],
                               str(self.clazz[i]["bot_id"]))
             except Exception as e:
                 log.debug(f"发送失败，请检查账号是否正常登录或是否被风控！错误信息：{str(e)}")

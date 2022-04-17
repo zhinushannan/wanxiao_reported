@@ -55,8 +55,10 @@ public class RedisUtil {
      * @return 返回结果，若为 null，则 redis 中不含有该项
      */
     public String getString(String k) {
-        return (String) redisTemplate.opsForValue().get(k);
+        Object o = redisTemplate.opsForValue().get(k);
+        return o == null ? null : o.toString();
     }
+
 
     /**
      * 从 redis 中删除指定的值

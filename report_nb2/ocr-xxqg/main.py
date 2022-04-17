@@ -4,6 +4,8 @@ import cv2
 import numpy as np
 from cnocr import CnOcr
 import sys
+import datetime
+import os
 
 src = cv2.imread(sys.argv[1])
 # cv2.namedWindow("input", cv2.WINDOW_AUTOSIZE)
@@ -33,8 +35,15 @@ res = ocr.ocr("./test.png")
 for i in res:
     if "当日积分" in "".join(i[0]):
         score = "".join(i[0]).split(":")[-1].split("：")[-1]
-# https://blog.csdn.net/qq_40456669/article/details/93375709
 
+now = datetime.datetime.today()
+today = f"{str(now.month).zfill(2)}{str(now.day).zfill(2)}"
+path = f"/home/zhinushannan/Desktop/xxqg/{today}/{today}.csv"
+with open(path, mode="a") as f:
+    f.write(f"{name},{score}\n")
+
+os.rename(sys.argv[1], f"/home/zhinushannan/Desktop/xxqg/{today}/{name}.png")
 print(name, score)
+print("已成功写入", path)
 
 sys.exit(0)
