@@ -49,6 +49,32 @@ INSERT INTO `account` VALUES ('赵思文','2200000160','Kwxy2000');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `bot`
+--
+
+DROP TABLE IF EXISTS `bot`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bot` (
+  `bot_id` varchar(255) NOT NULL,
+  `port` int NOT NULL,
+  `status` int DEFAULT NULL COMMENT '1正常，0停止\n',
+  PRIMARY KEY (`bot_id`),
+  UNIQUE KEY `bot_port_uindex` (`port`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='机器人列表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bot`
+--
+
+LOCK TABLES `bot` WRITE;
+/*!40000 ALTER TABLE `bot` DISABLE KEYS */;
+INSERT INTO `bot` VALUES ('2793287265',5700,1);
+/*!40000 ALTER TABLE `bot` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `bot_request`
 --
 
@@ -64,7 +90,7 @@ CREATE TABLE `bot_request` (
   `comment` varchar(255) DEFAULT NULL,
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`request_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +99,6 @@ CREATE TABLE `bot_request` (
 
 LOCK TABLES `bot_request` WRITE;
 /*!40000 ALTER TABLE `bot_request` DISABLE KEYS */;
-INSERT INTO `bot_request` VALUES (17,'1649842697407218','2793287265',0,'1377875184','','2022-04-13 17:38:17');
 /*!40000 ALTER TABLE `bot_request` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,6 +129,88 @@ LOCK TABLES `clazz` WRITE;
 /*!40000 ALTER TABLE `clazz` DISABLE KEYS */;
 INSERT INTO `clazz` VALUES ('18数据','赵思文','2022.4.10','147331','825909952','5701',1),('19软件2','赵思文','2022.4.10','147372','1087894326','2700',0),('20数据','赵思文','2022.4.10','236630','945219184','5700',1),('20软件2','赵思文','2022.4.10','236628','953152455','5700',0);
 /*!40000 ALTER TABLE `clazz` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `friend_list`
+--
+
+DROP TABLE IF EXISTS `friend_list`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `friend_list` (
+  `bot_id` varchar(255) NOT NULL,
+  `user_id` varchar(255) NOT NULL,
+  `nickname` varchar(255) NOT NULL,
+  `remark` varchar(255) NOT NULL,
+  `mark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`bot_id`,`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `friend_list`
+--
+
+LOCK TABLES `friend_list` WRITE;
+/*!40000 ALTER TABLE `friend_list` DISABLE KEYS */;
+INSERT INTO `friend_list` VALUES ('2793287265','1377875184','1377875184','治怒善男',NULL),('2793287265','1427774041','1427774041','ice_water',NULL),('2793287265','2793287265','2793287265','治怒善男',NULL),('2793287265','66600000','66600000','babyQ',NULL);
+/*!40000 ALTER TABLE `friend_list` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `group_list`
+--
+
+DROP TABLE IF EXISTS `group_list`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `group_list` (
+  `bot_id` varchar(255) NOT NULL,
+  `group_id` varchar(255) NOT NULL,
+  `group_name` varchar(255) NOT NULL,
+  `max_member_count` int NOT NULL,
+  `member_count` int NOT NULL,
+  `mark` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`bot_id`,`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `group_list`
+--
+
+LOCK TABLES `group_list` WRITE;
+/*!40000 ALTER TABLE `group_list` DISABLE KEYS */;
+INSERT INTO `group_list` VALUES ('2793287265','1003209156','小窝',200,6,NULL),('2793287265','1030838056','*',200,4,NULL),('2793287265','369746384','实干青年 - 老年人活动中心',200,7,NULL);
+/*!40000 ALTER TABLE `group_list` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `message`
+--
+
+DROP TABLE IF EXISTS `message`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `message` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `bot_id` varchar(255) NOT NULL,
+  `message` varchar(255) NOT NULL,
+  `target_id` varchar(255) NOT NULL COMMENT '发送目标，可能是群组也可能是私信，为群号或QQ账号\n',
+  `type` int NOT NULL COMMENT '0是群组，1是私信',
+  `send_time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='使用机器人发送的消息';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `message`
+--
+
+LOCK TABLES `message` WRITE;
+/*!40000 ALTER TABLE `message` DISABLE KEYS */;
+/*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -165,4 +272,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-13  9:52:27
+-- Dump completed on 2022-04-19  8:14:30
