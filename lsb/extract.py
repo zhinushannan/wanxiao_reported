@@ -38,7 +38,7 @@ def extract(pic, lenth, hide):
 
 pic = r"/home/zhinushannan/CODE/wanxiao_reported/lsb_data/new.png"
 
-lenth = 600
+lenth = 200
 
 hide = r"/home/zhinushannan/CODE/wanxiao_reported/lsb_data/hide.txt"
 
