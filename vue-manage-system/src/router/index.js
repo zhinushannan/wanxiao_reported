@@ -17,7 +17,16 @@ const routes = [
                     title: '系统首页'
                 },
                 component: () => import ( /* webpackChunkName: "dashboard" */ "../views/Dashboard.vue")
-            }, {
+            },
+            {
+                path: "/data/insert",
+                name: "data-insert",
+                meta: {
+                    title: "数据导入"
+                },
+                component: () => import( /* webpackChunkName: "data-insert" */ "../views/datas/insert.vue")
+            },
+            {
                 path: "/table",
                 name: "basetable",
                 meta: {

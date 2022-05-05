@@ -51,7 +51,7 @@ export default {
         title: "数据管理",
         subs: [
           {
-            index: "/form",
+            index: "/data/insert",
             title: "数据导入",
           },
           {
