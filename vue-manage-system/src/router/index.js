@@ -27,6 +27,14 @@ const routes = [
                 component: () => import( /* webpackChunkName: "data-insert" */ "../views/datas/insert.vue")
             },
             {
+                path: "/data/modify",
+                name: "data-modify",
+                meta: {
+                    title: "数据更改"
+                },
+                component: () => import( /* webpackChunkName: "data-insert" */ "../views/datas/modify.vue")
+            },
+            {
                 path: "/table",
                 name: "basetable",
                 meta: {

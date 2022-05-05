@@ -55,7 +55,7 @@ export default {
             title: "数据导入",
           },
           {
-            index: "/form",
+            index: "/data/modify",
             title: "数据更改",
           },
           {
