@@ -1,0 +1,36 @@
+package club.kwcoder.report.controller;
+
+import club.kwcoder.report.dataobject.Clazz;
+import club.kwcoder.report.dataobject.Student;
+import club.kwcoder.report.model.bean.PageBean;
+import club.kwcoder.report.model.bean.ResultBean;
+import club.kwcoder.report.model.dto.DataInsertDTO;
+import club.kwcoder.report.service.DataManagerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/data/")
+public class DataManagerController {
+
+    @Autowired
+    private DataManagerService dataManagerService;
+
+    @RequestMapping(value = "insert", method = RequestMethod.POST)
+    public ResultBean<String> insertData(@RequestBody DataInsertDTO dataInsert) {
+        return dataManagerService.insertData(dataInsert);
+    }
+
+    @RequestMapping(value = "list/class", method = RequestMethod.POST)
+    public ResultBean<PageBean<Clazz>> clazzList(@RequestBody PageBean<Clazz> pageBean) {
+        return dataManagerService.clazzList(pageBean);
+    }
+
+    @RequestMapping(value = "list/student", method = RequestMethod.GET)
+    public ResultBean<List<Student>> studentList(@RequestParam(name = "class", required = true) String studentClazz) {
+        return dataManagerService.studentList(studentClazz);
+    }
+
+}
