@@ -45,7 +45,7 @@
           </el-form-item>
           <div style="margin-left: 80px">
             <el-upload class="upload-demo" drag action="http://localhost:8080/upload/" multiple
-                       limit=1
+                       :limit="1"
                        :on-exceed="exceed"
                        :on-success="success"
                        :on-remove="remove"
