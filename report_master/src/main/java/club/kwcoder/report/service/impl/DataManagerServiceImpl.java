@@ -44,7 +44,7 @@ public class DataManagerServiceImpl implements DataManagerService {
         }
 
         LocalDate tomorrow = LocalDate.now().plusDays(1);
-        Clazz clazz = new Clazz(dataInsert.getClazzName(), dataInsert.getTeacherName(), String.format("%s.%s.%s", tomorrow.getYear(), tomorrow.getMonthValue(), tomorrow.getDayOfMonth()), dataInsert.getDeptId(), dataInsert.getGroupId(), dataInsert.getBotId(), Boolean.parseBoolean(dataInsert.getDelete()) ? 1 : 0);
+        Clazz clazz = new Clazz(dataInsert.getClazzName(), dataInsert.getTeacherName(), String.format("%s.%s.%s", tomorrow.getYear(), tomorrow.getMonthValue(), tomorrow.getDayOfMonth()), dataInsert.getDeptId(), dataInsert.getGroupId(), dataInsert.getBotId(), dataInsert.getDelete());
 
         CsvImportParams importParams = new CsvImportParams();
         importParams.setTitleRows(0);
@@ -80,5 +80,30 @@ public class DataManagerServiceImpl implements DataManagerService {
         studentExample.or().andStudentClazzEqualTo(studentClazz);
         List<Student> students = studentDao.selectByExample(studentExample);
         return ResultBean.ok("查询成功！", students);
+    }
+
+    @Override
+    public ResultBean<String> modifyClazz(DataInsertDTO dataInsert) {
+        Clazz clazz = new Clazz()
+                .setClazzName(dataInsert.getClazzName())
+                .setTeacherName(dataInsert.getTeacherName())
+                .setDeptId(dataInsert.getDeptId())
+                .setGroupId(dataInsert.getGroupId())
+                .setBotId(dataInsert.getBotId())
+                .setDelete(dataInsert.getDelete());
+        clazzDao.updateByPrimaryKeySelective(clazz);
+        return ResultBean.ok("修改成功！", null);
+    }
+
+    @Override
+    @Transactional
+    public ResultBean<String> deleteClazz(String clazzName) {
+        int i = clazzDao.deleteByPrimaryKey(clazzName);
+
+        StudentExample example = new StudentExample();
+        example.createCriteria().andStudentClazzEqualTo(clazzName);
+        studentDao.deleteByExample(example);
+
+        return i == 1 ? ResultBean.ok("删除成功！", null) : ResultBean.error("删除失败！班级不存在或系统错误！", null);
     }
 }

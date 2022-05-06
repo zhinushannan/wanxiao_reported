@@ -5,6 +5,7 @@ import store from './store'
 import installElementPlus from './plugins/element'
 import './assets/css/icon.css'
 import axios from "axios";
+import jquery from "jquery"
 
 const app = createApp(App)
 installElementPlus(app)
@@ -15,6 +16,6 @@ app
 
 
 axios.defaults.baseURL = "http://localhost:8080"
-app.config.globalProperties.$axios=axios
-
+app.config.globalProperties.$axios = axios
+app.config.globalProperties.$jq = jquery
 

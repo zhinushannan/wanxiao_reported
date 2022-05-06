@@ -14,4 +14,8 @@ public interface DataManagerService {
     ResultBean<PageBean<Clazz>> clazzList(PageBean<Clazz> pageBean);
 
     ResultBean<List<Student>> studentList(String studentClazz);
+
+    ResultBean<String> modifyClazz(DataInsertDTO dataInsert);
+
+    ResultBean<String> deleteClazz(String clazzName);
 }

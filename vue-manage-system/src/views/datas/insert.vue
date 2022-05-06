@@ -41,7 +41,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="撤回功能">
-            <el-switch v-model="form.delete" active-value=true inactive-value=false />
+            <el-switch v-model="form.delete" :active-value=1 :inactive-value=0 />
           </el-form-item>
           <div style="margin-left: 80px">
             <el-upload class="upload-demo" drag action="http://localhost:8080/upload/" multiple

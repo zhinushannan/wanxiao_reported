@@ -17,31 +17,16 @@
           <el-table
               :data="clazzData['data']"
               style="width: 100%">
-            <el-table-column
-                fixed
-                prop="clazzName"
-                align="center"
-                label="班级">
-            </el-table-column>
-            <el-table-column
-                prop="teacherName"
-                align="center"
-                label="导员姓名">
-            </el-table-column>
-            <el-table-column
-                prop="deptId"
-                align="center"
-                label="班级ID">
-            </el-table-column>
-            <el-table-column
-                prop="groupId"
-                align="center"
-                label="班级群号">
-            </el-table-column>
-            <el-table-column
-                prop="botId"
-                align="center"
-                label="机器人">
+            <el-table-column fixed prop="clazzName" align="center" label="班级" />
+            <el-table-column prop="teacherName" align="center" label="导员姓名" />
+            <el-table-column prop="deptId" align="center" label="班级ID" />
+            <el-table-column prop="groupId" align="center" label="班级群号" />
+            <el-table-column prop="botId" align="center" label="机器人" />
+            <el-table-column prop="delete" align="center" label="撤回服务" :formatter="deleteFormat" >
+              <template #default="scope">
+                <el-tag v-if="scope.row.delete===1">已开通</el-tag>
+                <el-tag v-if="scope.row.delete===0" type="info">未开通</el-tag>
+              </template>
             </el-table-column>
             <el-table-column label="操作" align="center" width="160">
               <template #default="scope" style="height: 400px">
@@ -94,7 +79,14 @@
             <el-input v-model="clazzForm.clazzName" disabled></el-input>
           </el-form-item>
           <el-form-item label="导员姓名" prop="teacherName">
-            <el-input v-model="clazzForm.teacherName"></el-input>
+            <el-select v-model="clazzForm.teacherName" placeholder="请选择辅导员姓名">
+              <el-option
+                  v-for="item in accounts"
+                  :key="item.teacherName"
+                  :label="item.teacherName"
+                  :value="item.teacherName"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="班级编号" prop="deptId">
             <el-input v-model="clazzForm.deptId"></el-input>
@@ -104,19 +96,25 @@
           </el-form-item>
           <el-form-item label="机器人" prop="botId">
             <el-select v-model="clazzForm.botId" placeholder="请选择机器人编号">
-              <el-option key="bbk" label="步步高" value="bbk"></el-option>
-              <el-option key="xtc" label="小天才" value="xtc"></el-option>
-              <el-option key="imoo" label="imoo" value="imoo"></el-option>
+              <el-option
+                  v-for="item in bots"
+                  :key="item.port"
+                  :label="item.port"
+                  :value="item.port"
+              />
             </el-select>
+          </el-form-item>
+          <el-form-item label="撤回功能">
+            <el-switch v-model="clazzForm.delete" :active-value=1 :inactive-value=0 />
           </el-form-item>
         </el-form>
       </div>
       <template #footer>
       <span class="dialog-footer">
-          <el-button type="primary" @click="clazzVisible = false">确 定</el-button>
+          <el-button type="primary" @click="clazzEditCommit">确 定</el-button>
 
           <el-button @click="clazzVisible = false">取 消</el-button>
-          <el-popconfirm title="删除后不可恢复，请再次确认！" @confirm="clazzVisible = false">
+          <el-popconfirm title="删除后不可恢复，请再次确认！" @confirm="deleteClazz">
               <template #reference>
                 <el-button type="danger">删除班级</el-button>
               </template>
@@ -155,10 +153,15 @@
 </template>
 
 <script>
+import {ElMessage} from "element-plus";
+
 export default {
   name: "modify",
   data() {
     return {
+      bots: [],
+      accounts: [],
+
       clazzData: {
         page: 1,
         size: 10
@@ -178,6 +181,9 @@ export default {
     }
   },
   methods: {
+    deleteFormat(row, column, cellValue, index) {
+      return cellValue === 1 ? "已开通" : "未开通"
+    },
     student(row) {
       let _this = this
       _this.$axios.get("/data/list/student?class=" + row["clazzName"]).then((resp) => {
@@ -186,8 +192,32 @@ export default {
       })
     },
     editClazz(row) {
-      this.clazzForm = row
+      this.clazzForm = this.$jq.extend({}, row)
       this.clazzVisible = true
+    },
+    clazzEditCommit() {
+      let _this = this
+      _this.$axios.post("/data/modify/class", _this.clazzForm).then((resp) => {
+        _this.list()
+        if (resp.data.flag) {
+          ElMessage.success(resp.data.message)
+        } else {
+          ElMessage.error(resp.data.message)
+        }
+        _this.clazzVisible = false
+      })
+    },
+    deleteClazz() {
+      let _this = this
+      _this.$axios.get("/data/delete/class?class=" + _this.clazzForm["clazzName"]).then((resp) => {
+        if (resp.data.flag) {
+          ElMessage.success(resp.data.message)
+        } else {
+          ElMessage.error(resp.data.message)
+        }
+        _this.clazzVisible = false
+        _this.list()
+      })
     },
     editStu(row) {
       this.stuForm = row
@@ -200,12 +230,24 @@ export default {
           })
           .catch(_ => {
           });
+    },
+
+    list() {
+      let _this = this
+      _this.$axios.post("/data/list/class", _this.clazzData).then((resp) => {
+        _this.clazzData = resp.data.data
+      })
     }
   },
   created() {
+    this.list()
     let _this = this
-    _this.$axios.post("/data/list/class", _this.clazzData).then((resp) => {
-      _this.clazzData = resp.data.data
+    _this.$axios.get("/bot/list").then((resp) => {
+      _this.bots = resp["data"]["data"]
+    })
+
+    _this.$axios.get("/account/list").then((resp) => {
+      _this.accounts = resp["data"]["data"]
     })
   }
 }

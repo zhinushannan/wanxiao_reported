@@ -10,6 +10,6 @@ public class DataInsertDTO {
     private String deptId;
     private String groupId;
     private String botId;
-    private String delete;
+    private Integer delete;
 
 }

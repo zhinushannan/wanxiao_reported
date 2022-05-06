@@ -29,8 +29,18 @@ public class DataManagerController {
     }
 
     @RequestMapping(value = "list/student", method = RequestMethod.GET)
-    public ResultBean<List<Student>> studentList(@RequestParam(name = "class", required = true) String studentClazz) {
+    public ResultBean<List<Student>> studentList(@RequestParam(name = "class") String studentClazz) {
         return dataManagerService.studentList(studentClazz);
+    }
+
+    @RequestMapping(value = "modify/class", method = RequestMethod.POST)
+    public ResultBean<String> clazzModify(@RequestBody DataInsertDTO dataInsert) {
+        return dataManagerService.modifyClazz(dataInsert);
+    }
+
+    @RequestMapping(value = "delete/class", method = RequestMethod.GET)
+    public ResultBean<String> clazzDelete(@RequestParam("class") String clazzName) {
+        return dataManagerService.deleteClazz(clazzName);
     }
 
 }
