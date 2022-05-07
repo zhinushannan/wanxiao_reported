@@ -1,15 +1,15 @@
 package club.kwcoder.report.service.impl;
 
-import club.kwcoder.report.dataobject.Clazz;
-import club.kwcoder.report.dataobject.ClazzExample;
-import club.kwcoder.report.dataobject.Student;
-import club.kwcoder.report.dataobject.StudentExample;
+import club.kwcoder.report.dataobject.*;
+import club.kwcoder.report.mapper.AccountDao;
 import club.kwcoder.report.mapper.ClazzDao;
 import club.kwcoder.report.mapper.StudentDao;
+import club.kwcoder.report.mapper.batch.AccountCustomDao;
 import club.kwcoder.report.mapper.batch.StudentBatchDao;
 import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.model.dto.DataInsertDTO;
+import club.kwcoder.report.model.dto.ModelDTO;
 import club.kwcoder.report.service.DataManagerService;
 import cn.afterturn.easypoi.csv.CsvImportUtil;
 import cn.afterturn.easypoi.csv.entity.CsvImportParams;
@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,6 +36,12 @@ public class DataManagerServiceImpl implements DataManagerService {
 
     @Autowired
     private StudentBatchDao studentBatchDao;
+
+    @Autowired
+    private AccountDao accountDao;
+
+    @Autowired
+    private AccountCustomDao accountCustomDao;
 
     @Override
     @Transactional
@@ -112,5 +119,39 @@ public class DataManagerServiceImpl implements DataManagerService {
     public ResultBean<String> studentModify(Student student) {
         studentDao.updateByPrimaryKeySelective(student);
         return ResultBean.ok("修改成功！", null);
+    }
+
+    @Override
+    public ResultBean<PageBean<ModelDTO>> accountList(PageBean<ModelDTO> pageBean) {
+        PageHelper.startPage(pageBean.getPage(), pageBean.getSize());
+
+        List<Account> accounts = accountDao.selectByExample(new AccountExample());
+
+        List<ModelDTO> list = new ArrayList<>();
+        accounts.forEach(account -> {
+            ClazzExample example = new ClazzExample();
+            example.createCriteria().andTeacherNameEqualTo(account.getTeacherName());
+            List<String> clazz = new ArrayList<>();
+            clazzDao.selectByExample(example).forEach(e -> clazz.add(e.getClazzName()));
+
+            list.add(new ModelDTO()
+                    .setTeacherName(account.getTeacherName())
+                    .setUsername(account.getUsername())
+                    .setPassword(account.getPassword())
+                    .setClazz(clazz));
+        });
+
+        PageInfo<Account> of = PageInfo.of(accounts);
+
+        pageBean
+                .setTotal(of.getTotal())
+                .setData(list);
+        return ResultBean.ok("查询成功！", pageBean);
+    }
+
+    @Override
+    public ResultBean<String> accountSave(Account account) {
+        accountCustomDao.insertAndUpdate(account);
+        return ResultBean.ok("操作成功！", null);
     }
 }

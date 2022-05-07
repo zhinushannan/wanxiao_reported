@@ -185,7 +185,7 @@ export default {
     },
     student(row) {
       let _this = this
-      _this.$axios.get("/data/list/student?class=" + row["clazzName"]).then((resp) => {
+      _this.$axios.get("/data/student/list?class=" + row["clazzName"]).then((resp) => {
         _this.currentClazz = row["clazzName"]
         _this.stuData = resp["data"]["data"]
       })
@@ -196,7 +196,7 @@ export default {
     },
     clazzEditCommit() {
       let _this = this
-      _this.$axios.post("/data/modify/class", _this.clazzForm).then((resp) => {
+      _this.$axios.post("/data/class/modify", _this.clazzForm).then((resp) => {
         _this.list()
         if (resp.data.flag) {
           ElMessage.success(resp.data.message)
@@ -208,7 +208,7 @@ export default {
     },
     deleteClazz() {
       let _this = this
-      _this.$axios.get("/data/delete/class?class=" + _this.clazzForm["clazzName"]).then((resp) => {
+      _this.$axios.get("/data/class/delete?class=" + _this.clazzForm["clazzName"]).then((resp) => {
         if (resp.data.flag) {
           ElMessage.success(resp.data.message)
         } else {
@@ -224,7 +224,7 @@ export default {
     },
     stuEditCommit() {
       let _this = this
-      _this.$axios.post("/data/modify/stu", _this.stuForm).then((resp) => {
+      _this.$axios.post("/data/student/modify", _this.stuForm).then((resp) => {
         _this.student({"clazzName": _this.currentClazz})
         if (resp.data.flag) {
           ElMessage.success(resp.data.message)
@@ -245,7 +245,7 @@ export default {
 
     list() {
       let _this = this
-      _this.$axios.post("/data/list/class", _this.clazzData).then((resp) => {
+      _this.$axios.post("/data/class/list", _this.clazzData).then((resp) => {
         _this.clazzData = resp.data.data
       })
     },

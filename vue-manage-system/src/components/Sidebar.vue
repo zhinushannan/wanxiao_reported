@@ -59,8 +59,8 @@ export default {
             title: "数据更改",
           },
           {
-            index: "/form",
-            title: "数据删除",
+            index: "/data/account",
+            title: "帐号管理",
           }
         ]
       },
