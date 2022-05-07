@@ -78,6 +78,7 @@ public class DataManagerServiceImpl implements DataManagerService {
     public ResultBean<List<Student>> studentList(String studentClazz) {
         StudentExample studentExample = new StudentExample();
         studentExample.or().andStudentClazzEqualTo(studentClazz);
+        studentExample.setOrderByClause("remove, CONVERT(student_name USING gbk) COLLATE gbk_chinese_ci");
         List<Student> students = studentDao.selectByExample(studentExample);
         return ResultBean.ok("查询成功！", students);
     }

@@ -313,6 +313,66 @@ public class StudentExample {
             addCriterion("student_clazz not between", value1, value2, "studentClazz");
             return (Criteria) this;
         }
+
+        public Criteria andRemoveIsNull() {
+            addCriterion("remove is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemoveIsNotNull() {
+            addCriterion("remove is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemoveEqualTo(Integer value) {
+            addCriterion("remove =", value, "remove");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemoveNotEqualTo(Integer value) {
+            addCriterion("remove <>", value, "remove");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemoveGreaterThan(Integer value) {
+            addCriterion("remove >", value, "remove");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemoveGreaterThanOrEqualTo(Integer value) {
+            addCriterion("remove >=", value, "remove");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemoveLessThan(Integer value) {
+            addCriterion("remove <", value, "remove");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemoveLessThanOrEqualTo(Integer value) {
+            addCriterion("remove <=", value, "remove");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemoveIn(List<Integer> values) {
+            addCriterion("remove in", values, "remove");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemoveNotIn(List<Integer> values) {
+            addCriterion("remove not in", values, "remove");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemoveBetween(Integer value1, Integer value2) {
+            addCriterion("remove between", value1, value2, "remove");
+            return (Criteria) this;
+        }
+
+        public Criteria andRemoveNotBetween(Integer value1, Integer value2) {
+            addCriterion("remove not between", value1, value2, "remove");
+            return (Criteria) this;
+        }
     }
 
     /**

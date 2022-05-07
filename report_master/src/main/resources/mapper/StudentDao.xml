@@ -5,6 +5,7 @@
     <id column="student_qq" jdbcType="VARCHAR" property="studentQq" />
     <result column="student_name" jdbcType="VARCHAR" property="studentName" />
     <result column="student_clazz" jdbcType="VARCHAR" property="studentClazz" />
+    <result column="remove" jdbcType="INTEGER" property="remove" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -65,7 +66,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    student_qq, student_name, student_clazz
+    student_qq, student_name, student_clazz, remove
   </sql>
   <select id="selectByExample" parameterType="club.kwcoder.report.dataobject.StudentExample" resultMap="BaseResultMap">
     select
@@ -98,10 +99,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="club.kwcoder.report.dataobject.Student">
-    insert into student (student_qq, student_name, student_clazz
-      )
-    values (#{studentQq,jdbcType=VARCHAR}, #{studentName,jdbcType=VARCHAR}, #{studentClazz,jdbcType=VARCHAR}
-      )
+    insert into student (student_qq, student_name, student_clazz, 
+      remove)
+    values (#{studentQq,jdbcType=VARCHAR}, #{studentName,jdbcType=VARCHAR}, #{studentClazz,jdbcType=VARCHAR}, 
+      #{remove,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="club.kwcoder.report.dataobject.Student">
     insert into student
@@ -115,6 +116,9 @@
       <if test="studentClazz != null">
         student_clazz,
       </if>
+      <if test="remove != null">
+        remove,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="studentQq != null">
@@ -125,6 +129,9 @@
       </if>
       <if test="studentClazz != null">
         #{studentClazz,jdbcType=VARCHAR},
+      </if>
+      <if test="remove != null">
+        #{remove,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -146,6 +153,9 @@
       <if test="record.studentClazz != null">
         student_clazz = #{record.studentClazz,jdbcType=VARCHAR},
       </if>
+      <if test="record.remove != null">
+        remove = #{record.remove,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -155,7 +165,8 @@
     update student
     set student_qq = #{record.studentQq,jdbcType=VARCHAR},
       student_name = #{record.studentName,jdbcType=VARCHAR},
-      student_clazz = #{record.studentClazz,jdbcType=VARCHAR}
+      student_clazz = #{record.studentClazz,jdbcType=VARCHAR},
+      remove = #{record.remove,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -169,13 +180,17 @@
       <if test="studentClazz != null">
         student_clazz = #{studentClazz,jdbcType=VARCHAR},
       </if>
+      <if test="remove != null">
+        remove = #{remove,jdbcType=INTEGER},
+      </if>
     </set>
     where student_qq = #{studentQq,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="club.kwcoder.report.dataobject.Student">
     update student
     set student_name = #{studentName,jdbcType=VARCHAR},
-      student_clazz = #{studentClazz,jdbcType=VARCHAR}
+      student_clazz = #{studentClazz,jdbcType=VARCHAR},
+      remove = #{remove,jdbcType=INTEGER}
     where student_qq = #{studentQq,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -41,12 +41,17 @@
           <h4>{{ currentClazz }}学生信息</h4>
           <el-table
               :data="stuData"
+              height="500"
               style="width: 100%">
             <el-table-column
                 fixed
                 prop="studentName"
                 align="center"
                 label="姓名">
+              <template #default="scope">
+                <span v-if="scope.row.remove === 0"> {{ scope.row.studentName }} </span>
+                <span v-if="scope.row.remove === 1"><el-tag size="small" type="warning"> {{ scope.row.studentName }} </el-tag></span>
+              </template>
             </el-table-column>
             <el-table-column
                 prop="studentQq"
@@ -237,7 +242,7 @@ export default {
       _this.$axios.post("/data/list/class", _this.clazzData).then((resp) => {
         _this.clazzData = resp.data.data
       })
-    }
+    },
   },
   created() {
     this.list()
@@ -249,7 +254,8 @@ export default {
     _this.$axios.get("/account/list").then((resp) => {
       _this.accounts = resp["data"]["data"]
     })
-  }
+
+  },
 }
 </script>
 

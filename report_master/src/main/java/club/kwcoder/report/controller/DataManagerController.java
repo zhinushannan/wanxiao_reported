@@ -2,6 +2,7 @@ package club.kwcoder.report.controller;
 
 import club.kwcoder.report.dataobject.Clazz;
 import club.kwcoder.report.dataobject.Student;
+import club.kwcoder.report.dataobject.StudentExample;
 import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.model.dto.DataInsertDTO;
