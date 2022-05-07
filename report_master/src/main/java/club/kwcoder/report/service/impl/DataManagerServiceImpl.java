@@ -107,4 +107,10 @@ public class DataManagerServiceImpl implements DataManagerService {
 
         return i == 1 ? ResultBean.ok("删除成功！", null) : ResultBean.error("删除失败！班级不存在或系统错误！", null);
     }
+
+    @Override
+    public ResultBean<String> studentModify(Student student) {
+        studentDao.updateByPrimaryKeySelective(student);
+        return ResultBean.ok("修改成功！", null);
+    }
 }

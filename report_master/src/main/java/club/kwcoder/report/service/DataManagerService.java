@@ -18,4 +18,6 @@ public interface DataManagerService {
     ResultBean<String> modifyClazz(DataInsertDTO dataInsert);
 
     ResultBean<String> deleteClazz(String clazzName);
+
+    ResultBean<String> studentModify(Student student);
 }

@@ -29,11 +29,6 @@ public class DataManagerController {
         return dataManagerService.clazzList(pageBean);
     }
 
-    @RequestMapping(value = "list/student", method = RequestMethod.GET)
-    public ResultBean<List<Student>> studentList(@RequestParam(name = "class") String studentClazz) {
-        return dataManagerService.studentList(studentClazz);
-    }
-
     @RequestMapping(value = "modify/class", method = RequestMethod.POST)
     public ResultBean<String> clazzModify(@RequestBody DataInsertDTO dataInsert) {
         return dataManagerService.modifyClazz(dataInsert);
@@ -43,5 +38,16 @@ public class DataManagerController {
     public ResultBean<String> clazzDelete(@RequestParam("class") String clazzName) {
         return dataManagerService.deleteClazz(clazzName);
     }
+
+    @RequestMapping(value = "list/student", method = RequestMethod.GET)
+    public ResultBean<List<Student>> studentList(@RequestParam(name = "class") String studentClazz) {
+        return dataManagerService.studentList(studentClazz);
+    }
+
+    @RequestMapping(value = "/modify/stu", method = RequestMethod.POST)
+    public ResultBean<String> studentModify(@RequestBody Student student) {
+        return dataManagerService.studentModify(student);
+    }
+
 
 }

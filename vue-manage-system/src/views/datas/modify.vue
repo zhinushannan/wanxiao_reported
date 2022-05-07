@@ -70,12 +70,6 @@
     </div>
 
 
-
-
-
-
-
-
     <!-- 班级编辑弹出框 -->
     <el-dialog :title="'编辑' + clazzForm['clazzName']" v-model="clazzVisible" width="30%">
       <div>
@@ -138,16 +132,16 @@
           <el-form-item label="QQ" prop="studentQq">
             <el-input v-model="stuForm.studentQq"></el-input>
           </el-form-item>
-          <el-radio-group v-model="stuForm.isArm" size="large" style="margin-left: 80px">
-            <el-radio-button label="不在校" />
-            <el-radio-button label="在校" />
+          <el-radio-group v-model="stuForm.remove" size="large" style="margin-left: 80px">
+            <el-radio-button :label="0">在校</el-radio-button>
+            <el-radio-button :label="1">不在校</el-radio-button>
           </el-radio-group>
         </el-form>
       </div>
       <template #footer>
       <span class="dialog-footer">
-          <el-button type="primary" @click="clazzVisible = false">确 定</el-button>
-          <el-button @click="clazzVisible = false">取 消</el-button>
+          <el-button type="primary" @click="stuEditCommit">确 定</el-button>
+          <el-button @click="stuVisible = false">取 消</el-button>
       </span>
       </template>
     </el-dialog>
@@ -227,6 +221,18 @@ export default {
     editStu(row) {
       this.stuForm = row
       this.stuVisible = true
+    },
+    stuEditCommit() {
+      let _this = this
+      _this.$axios.post("/data/modify/stu", _this.stuForm).then((resp) => {
+        _this.student({"clazzName": _this.currentClazz})
+        if (resp.data.flag) {
+          ElMessage.success(resp.data.message)
+        } else {
+          ElMessage.error(resp.data.message)
+        }
+        _this.stuVisible = false
+      })
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
