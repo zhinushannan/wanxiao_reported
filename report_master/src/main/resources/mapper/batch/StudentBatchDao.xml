@@ -2,9 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="club.kwcoder.report.mapper.batch.StudentBatchDao">
     <resultMap id="BaseResultMap" type="club.kwcoder.report.dataobject.Student">
-        <id column="student_qq" jdbcType="VARCHAR" property="studentQq" />
-        <result column="student_name" jdbcType="VARCHAR" property="studentName" />
-        <result column="student_clazz" jdbcType="VARCHAR" property="studentClazz" />
+        <id column="student_id" jdbcType="VARCHAR" property="studentId"/>
+        <id column="student_qq" jdbcType="VARCHAR" property="studentQq"/>
+        <result column="student_name" jdbcType="VARCHAR" property="studentName"/>
+        <result column="student_clazz" jdbcType="VARCHAR" property="studentClazz"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -24,7 +25,8 @@
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -53,7 +55,8 @@
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -65,19 +68,22 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-        student_qq, student_name, student_clazz
+        student_qq
+        , student_name, student_clazz
     </sql>
 
     <insert id="insertAndUpdateBatch">
-        insert into student (student_qq, student_name, student_clazz)
+        insert into student (student_id, student_qq, student_name, student_clazz)
         values
         <foreach collection="studentList" item="item" index="index" separator=",">
-            (#{item.studentQq,jdbcType=VARCHAR}, #{item.studentName,jdbcType=VARCHAR},
+            (#{item.studentId,jdbcType=VARCHAR}, #{item.studentQq,jdbcType=VARCHAR},
+            #{item.studentName,jdbcType=VARCHAR},
             #{item.studentClazz,jdbcType=VARCHAR})
         </foreach>
         ON DUPLICATE KEY UPDATE
         student_name = values(student_name),
-        student_clazz = values(student_clazz)
+        student_qq = values(student_qq),
+        student_clazz = values(student_clazz);
     </insert>
 
 </mapper>

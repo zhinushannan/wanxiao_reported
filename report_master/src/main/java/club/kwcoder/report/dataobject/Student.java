@@ -3,7 +3,6 @@ package club.kwcoder.report.dataobject;
 import java.io.Serializable;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
-import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
 import lombok.Data;
 
 /**
@@ -12,6 +11,8 @@ import lombok.Data;
  */
 @Data
 public class Student implements Serializable {
+    @Excel(name = "studentId")
+    private String studentId;
 
     @Excel(name = "studentQq")
     private String studentQq;

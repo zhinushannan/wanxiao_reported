@@ -13,7 +13,7 @@ public interface StudentDao {
 
     int deleteByExample(StudentExample example);
 
-    int deleteByPrimaryKey(String studentQq);
+    int deleteByPrimaryKey(String studentId);
 
     int insert(Student record);
 
@@ -21,7 +21,7 @@ public interface StudentDao {
 
     List<Student> selectByExample(StudentExample example);
 
-    Student selectByPrimaryKey(String studentQq);
+    Student selectByPrimaryKey(String studentId);
 
     int updateByExampleSelective(@Param("record") Student record, @Param("example") StudentExample example);
 

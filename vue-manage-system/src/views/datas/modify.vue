@@ -131,8 +131,11 @@
     <el-dialog :title="'编辑' + currentClazz + stuForm['studentName']" v-model="stuVisible" width="30%">
       <div>
         <el-form ref="stuForm" :rules="stuFormRules" :model="stuForm" label-width="80px">
+          <el-form-item label="学号" prop="studentId">
+            <el-input v-model="stuForm.studentId" disabled></el-input>
+          </el-form-item>
           <el-form-item label="姓名" prop="studentName">
-            <el-input v-model="stuForm.studentName" disabled></el-input>
+            <el-input v-model="stuForm.studentName"></el-input>
           </el-form-item>
           <el-form-item label="QQ" prop="studentQq">
             <el-input v-model="stuForm.studentQq"></el-input>
@@ -193,6 +196,9 @@ export default {
       _this.$axios.get("/data/student/list?class=" + row["clazzName"]).then((resp) => {
         _this.currentClazz = row["clazzName"]
         _this.stuData = resp["data"]["data"]
+
+        console.log(_this.stuData)
+
       })
     },
     editClazz(row) {
