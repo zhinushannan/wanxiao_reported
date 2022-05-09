@@ -5,6 +5,7 @@ import club.kwcoder.report.mapper.AccountDao;
 import club.kwcoder.report.mapper.ClazzDao;
 import club.kwcoder.report.mapper.StudentDao;
 import club.kwcoder.report.mapper.batch.AccountCustomDao;
+import club.kwcoder.report.mapper.batch.ClazzCustomDao;
 import club.kwcoder.report.mapper.batch.StudentBatchDao;
 import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
@@ -24,12 +25,17 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class DataManagerServiceImpl implements DataManagerService {
 
     @Autowired
     private ClazzDao clazzDao;
+
+    @Autowired
+    private ClazzCustomDao clazzCustomDao;
 
     @Autowired
     private StudentDao studentDao;
@@ -58,6 +64,7 @@ public class DataManagerServiceImpl implements DataManagerService {
         List<Student> students;
         try {
             students = CsvImportUtil.importCsv(new FileInputStream("/home/zhinushannan/Desktop/data-insert.csv"), Student.class, importParams);
+            System.out.println(students);
             students.forEach(s -> s.setStudentClazz(dataInsert.getClazzName()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -65,6 +72,7 @@ public class DataManagerServiceImpl implements DataManagerService {
         }
 
         clazzDao.insert(clazz);
+
         studentBatchDao.insertAndUpdateBatch(students);
 
         return ResultBean.ok("新增成功！", null);
@@ -153,5 +161,27 @@ public class DataManagerServiceImpl implements DataManagerService {
     public ResultBean<String> accountSave(Account account) {
         accountCustomDao.insertAndUpdate(account);
         return ResultBean.ok("操作成功！", null);
+    }
+
+    @Override
+    @Transactional
+    public ResultBean<String> accountDelete(String teacherName) {
+        int i = accountDao.deleteByPrimaryKey(teacherName);
+        if (i != 1) {
+            return ResultBean.error("删除失败，请稍后重试！", null);
+        }
+
+        ClazzExample example = new ClazzExample();
+        example.createCriteria().andTeacherNameEqualTo(teacherName);
+        List<Clazz> collect = clazzDao.selectByExample(example).stream().filter(clazz -> {
+            clazz.setTeacherName(null);
+            return true;
+        }).collect(Collectors.toList());
+
+        if (collect.size() != 0) {
+            clazzCustomDao.insertAndUpdate(collect);
+        }
+
+        return ResultBean.ok("删除成功，请注意设置相应班级的新辅导员！", null);
     }
 }

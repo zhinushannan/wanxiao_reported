@@ -62,7 +62,9 @@ public class DataManagerController {
         return dataManagerService.accountList(pageBean);
     }
 
-
-
+    @RequestMapping(value = "account/delete", method = RequestMethod.GET)
+    public ResultBean<String> accountDelete(@RequestParam(name = "teacherName") String teacherName) {
+        return dataManagerService.accountDelete(teacherName);
+    }
 
 }

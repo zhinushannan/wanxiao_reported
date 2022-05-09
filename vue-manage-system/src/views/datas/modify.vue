@@ -18,7 +18,12 @@
               :data="clazzData['data']"
               style="width: 100%">
             <el-table-column fixed prop="clazzName" align="center" label="班级" />
-            <el-table-column prop="teacherName" align="center" label="导员姓名" />
+            <el-table-column prop="teacherName" align="center" label="导员姓名">
+              <template #default="scope">
+                <span v-if="scope.row['teacherName']">{{ scope.row["teacherName"] }}</span>
+                <el-tag v-if="!scope.row['teacherName']" type="danger">未指定</el-tag>
+              </template>
+            </el-table-column>
             <el-table-column prop="deptId" align="center" label="班级ID" />
             <el-table-column prop="groupId" align="center" label="班级群号" />
             <el-table-column prop="botId" align="center" label="机器人" />

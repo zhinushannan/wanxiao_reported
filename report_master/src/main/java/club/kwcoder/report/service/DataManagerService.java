@@ -26,4 +26,6 @@ public interface DataManagerService {
     ResultBean<PageBean<ModelDTO>> accountList(PageBean<ModelDTO> pageBean);
 
     ResultBean<String> accountSave(Account account);
+
+    ResultBean<String> accountDelete(String teacherName);
 }
