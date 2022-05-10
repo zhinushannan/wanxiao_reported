@@ -43,6 +43,14 @@ const routes = [
                 component: () => import( /* webpackChunkName: "data-insert" */ "../views/datas/account.vue")
             },
             {
+                path: "/bot/add",
+                name: "bot-add",
+                meta: {
+                    title: "增加机器人"
+                },
+                component: () => import( /* webpackChunkName: "data-insert" */ "../views/bot/add.vue")
+            },
+            {
                 path: "/charts",
                 name: "basecharts",
                 meta: {

@@ -70,8 +70,8 @@ export default {
         title: "机器人管理",
         subs: [
           {
-            index: "/form",
-            title: "状态管理",
+            index: "/bot/add",
+            title: "增加机器人",
           },
           {
             index: "/form",

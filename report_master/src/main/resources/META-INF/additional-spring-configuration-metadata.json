@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "path.bot.templates",
+      "type": "java.lang.String",
+      "description": "机器人的模板文件的目录."
+    },
+    {
+      "name": "path.bot.app",
+      "type": "java.lang.String",
+      "description": "机器人的应用实例目录."
+    }
+  ] }

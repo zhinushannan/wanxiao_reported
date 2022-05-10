@@ -1,6 +1,7 @@
 package club.kwcoder.report.controller;
 
 import club.kwcoder.report.model.bean.ResultBean;
+import club.kwcoder.report.utils.StreamCloseUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,20 +29,7 @@ public class UploadController {
             e.printStackTrace();
             return ResultBean.error("上传失败，请稍后重试！", false);
         } finally {
-            if (outputStream != null) {
-                try {
-                    outputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            StreamCloseUtil.close(inputStream, outputStream);
         }
         return ResultBean.ok("上传成功！", true);
     }
