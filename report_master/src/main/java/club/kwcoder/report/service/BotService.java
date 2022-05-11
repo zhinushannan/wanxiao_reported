@@ -15,4 +15,6 @@ public interface BotService {
     ResultBean<Integer> getAvailablePort(Integer port);
 
     ResultBean<String> add(BotDTO bot);
+
+    ResultBean<String> qrcode(String port);
 }

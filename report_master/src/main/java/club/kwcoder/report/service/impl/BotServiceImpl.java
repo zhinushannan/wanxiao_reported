@@ -9,7 +9,6 @@ import club.kwcoder.report.model.dto.LogDTO;
 import club.kwcoder.report.service.BotService;
 import club.kwcoder.report.utils.RedisUtil;
 import club.kwcoder.report.utils.StreamCloseUtil;
-import club.kwcoder.report.utils.YamlUtil;
 import com.github.pagehelper.PageHelper;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -18,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import sun.misc.BASE64Encoder;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -199,6 +199,32 @@ public class BotServiceImpl implements BotService {
         // TODO 添加进数据库
 
         return ResultBean.ok("添加成功，请不要离开界面，稍后会弹出登录二维码！", null);
+    }
+
+    @Override
+    public ResultBean<String> qrcode(String port) {
+        String path = botAppPath + port + "/qrcode.png";
+        System.out.println(path);
+        File qrcode = new File(path);
+
+        if (!qrcode.exists()) {
+            return ResultBean.ok("false", "");
+        }
+
+        InputStream inputStream;
+        byte[]bytes = null;
+        try {
+            inputStream = new FileInputStream(qrcode);
+            bytes = new byte[inputStream.available()];
+            @SuppressWarnings("unused") int read = inputStream.read(bytes);
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        BASE64Encoder encoder = new BASE64Encoder();
+        String base64 = encoder.encode(bytes);
+
+        return ResultBean.ok("true", base64);
     }
 
 
