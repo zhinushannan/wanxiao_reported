@@ -198,6 +198,8 @@ public class BotServiceImpl implements BotService {
 
         // TODO 添加进数据库
 
+        // TODO 通过修改日志等级可以获取日志
+
         return ResultBean.ok("添加成功，请不要离开界面，稍后会弹出登录二维码！", null);
     }
 

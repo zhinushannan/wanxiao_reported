@@ -10,17 +10,8 @@ class ReportApplicationTests {
 
     @Test
     void contextLoads() throws IOException, InterruptedException {
-        Process exec = Runtime.getRuntime().exec("/home/zhinushannan/CODE/wanxiao_reported/go-cqhttp/5701/start.sh");
-
+        Process exec = Runtime.getRuntime().exec("nohup ./go-cqhttp & ", new String[]{}, new File("/home/zhinushannan/Desktop/test"));
         exec.waitFor();
-        InputStream in = exec.getInputStream();
-        BufferedReader read = new BufferedReader(new InputStreamReader(in));
-        String line = null;
-        while((line = read.readLine())!=null){
-            System.out.println(line);
-        }
-
     }
-
 
 }
