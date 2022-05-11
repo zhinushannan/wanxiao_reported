@@ -135,68 +135,70 @@ public class BotServiceImpl implements BotService {
 
     @Override
     public ResultBean<String> add(BotDTO bot) {
-        File src = new File(botTemplatesPath);
+        File src = new File(botTemplatesPath + "/go-cqhttp");
         File tar = new File(botAppPath + bot.getServersHttpPort());
         if (!tar.exists()) {
             @SuppressWarnings("unused") boolean mkdirs = tar.mkdirs();
         }
-        File[] files = src.listFiles();
-        assert files != null;
-        for (File file : files) {
-            String movePath = tar + File.separator + file.getName();
-            BufferedInputStream in = null;
-            BufferedOutputStream out = null;
-            try {
-                in = new BufferedInputStream(new FileInputStream(file));
-                out = new BufferedOutputStream(new FileOutputStream(movePath));
-                byte[] b = new byte[1024];
-                int temp;
-                while ((temp = in.read(b)) != -1) {
-                    out.write(b, 0, temp);
-                }
-            } catch (FileNotFoundException ignored) {
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                StreamCloseUtil.close(in, out);
+        String movePath = tar + File.separator + src.getName();
+        BufferedInputStream inputStream = null;
+        BufferedOutputStream outputStream = null;
+        try {
+            inputStream = new BufferedInputStream(new FileInputStream(src));
+            outputStream = new BufferedOutputStream(new FileOutputStream(movePath));
+            byte[] b = new byte[1024];
+            int temp;
+            while ((temp = inputStream.read(b)) != -1) {
+                outputStream.write(b, 0, temp);
             }
+        } catch (FileNotFoundException ignored) {
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            StreamCloseUtil.close(inputStream, outputStream);
         }
 
-        String fltPath = "";
-        String ymlPath = "";
+        File ftl = new File(botTemplatesPath);
+        File yml = new File(botAppPath + bot.getServersHttpPort() + "/config.yml");
         Writer out = null;
         try {
             Configuration cfg = new Configuration(Configuration.VERSION_2_3_31);
             //指定模板文件的来源
-            cfg.setDirectoryForTemplateLoading(new File(fltPath));
+            cfg.setDirectoryForTemplateLoading(ftl);
             //这是模板的编码
             cfg.setDefaultEncoding("UTF-8");
             //获取模板
             Template template = cfg.getTemplate("config.ftl");
             //创建FreeMarker的数据模型
-            Map<String,String> root = new HashMap<>();
-            root.put("uin","freemarker");
-            root.put("password","freemarker");
-            root.put("port","freemarker");
+            Map<String, String> root = new HashMap<>();
+            root.put("uin", bot.getAccountUin());
+            root.put("password", bot.getAccountPassword());
+            root.put("port", String.valueOf(bot.getServersHttpPort()));
             //这是输出文件
-            File file = new File(ymlPath);
-            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(yml)));
             //将模板与数据模型合并
             template.process(root, out);
+            // 执行
+            String command = "chmod +x ./go-cqhttp";
+            Runtime.getRuntime().exec(command, new String[]{}, new File(botAppPath + bot.getServersHttpPort()));
+            command = "nohup ./go-cqhttp & ";
+            System.out.println(command);
+            Runtime.getRuntime().exec(command, new String[]{}, new File(botAppPath + bot.getServersHttpPort()));
         } catch (IOException | TemplateException ignored) {
-            // 错误处理
+            // TODO 错误处理：删除相关的文件
         } finally {
             if (out != null) {
                 try {
                     out.flush();
                     out.close();
-                } catch (IOException ignored) {}
+                } catch (IOException ignored) {
+                }
             }
         }
 
+        // TODO 添加进数据库
 
-
-        return null;
+        return ResultBean.ok("添加成功，请不要离开界面，稍后会弹出登录二维码！", null);
     }
 
 
@@ -206,7 +208,7 @@ public class BotServiceImpl implements BotService {
             String pattern = "\\[\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}]";
             Pattern r = Pattern.compile(pattern);
             Matcher m = r.matcher(logStr);
-            @SuppressWarnings("unused") boolean b1 =  m.find();
+            @SuppressWarnings("unused") boolean b1 = m.find();
             String times = m.group();
 
             // 匹配等级
