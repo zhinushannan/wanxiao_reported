@@ -56,8 +56,6 @@ public class BotServiceImpl implements BotService {
             lastTime = redisUtil.getString("log:" + sessionId + ":" + port);
         }
 
-        System.out.println(lastTime);
-
         if (StringUtils.isBlank(lastTime)) {
             lastTime = "[" + LocalDateTime.now().minusMinutes(5).toString().replace("T", " ").split("\\.")[0] + "]";
         }
@@ -185,7 +183,6 @@ public class BotServiceImpl implements BotService {
             String command = "chmod +x ./go-cqhttp";
             Runtime.getRuntime().exec(command, new String[]{}, new File(botPath));
             command = "nohup ./go-cqhttp & ";
-            System.out.println(command);
             Runtime.getRuntime().exec(command, new String[]{}, new File(botPath));
         } catch (IOException | TemplateException ignored) {
             // TODO 错误处理：删除相关的文件
