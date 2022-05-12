@@ -7,6 +7,7 @@ import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.model.dto.BotDTO;
 import club.kwcoder.report.model.dto.LogDTO;
 import club.kwcoder.report.service.BotService;
+import club.kwcoder.report.utils.BotUtil;
 import club.kwcoder.report.utils.RedisUtil;
 import club.kwcoder.report.utils.StreamCloseUtil;
 import com.github.pagehelper.PageHelper;
@@ -35,11 +36,8 @@ public class BotServiceImpl implements BotService {
     @Autowired
     private RedisUtil redisUtil;
 
-    @Value("${path.bot.templates}")
-    private String botTemplatesPath;
-
-    @Value("${path.bot.app}")
-    private String botAppPath;
+    @Autowired
+    private BotUtil botUtil;
 
     @Override
     public ResultBean<List<Bot>> list() {
@@ -48,24 +46,28 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
-    public ResultBean<List<LogDTO>> logs(String botId, String sessionId) {
+    public ResultBean<List<LogDTO>> logs(String port, String sessionId) {
         String lastTime;
 
         if (StringUtils.isBlank(sessionId)) {
-            lastTime = redisUtil.getString("log:" + sessionId + ":" + botId);
-        } else {
             lastTime = null;
+            sessionId = UUID.randomUUID().toString();
+        } else {
+            lastTime = redisUtil.getString("log:" + sessionId + ":" + port);
         }
+
+        System.out.println(lastTime);
 
         if (StringUtils.isBlank(lastTime)) {
             lastTime = "[" + LocalDateTime.now().minusMinutes(5).toString().replace("T", " ").split("\\.")[0] + "]";
         }
 
+        String currentLogPath = botUtil.getCurrentLogPath(port);
         List<LogDTO> logs = new ArrayList<>();
         RandomAccessFile rf;
         try {
-            rf = new RandomAccessFile("/home/zhinushannan/Desktop/small-nohup.out", "r");
-            long len = rf.length();
+            rf = new RandomAccessFile(currentLogPath, "r");
+            long len = rf.length() - 1; // 此处 -1 可以防止最后一行是空行而报错
 
             long nextend = len - 1;
             String line;
@@ -74,25 +76,21 @@ public class BotServiceImpl implements BotService {
             while (nextend >= 0) {
                 c = rf.read();
                 if (c == '\n' || c == '\r') {
-                    line = new String(rf.readLine().getBytes(StandardCharsets.ISO_8859_1));
-                    try {
-                        LogDTO logDTO = this.parseToDto(line);
-                        if (!StringUtils.equals(logDTO.getTime(), lastTime)) {
-                            logs.add(0, logDTO);
-                        }
-                    } catch (IllegalStateException ignored) {
+                    String s = rf.readLine();
+                    line = new String(s.getBytes(StandardCharsets.ISO_8859_1));
+                    LogDTO logDTO = this.parseToDto(line);
+                    // 前者大则为正，为正即当前获取的时间大于上次获取的时间，即此条日志上次没获取，因此这次需要获取
+                    if (logDTO.getTime().compareTo(lastTime) > 0) {
+                        logs.add(0, logDTO);
                     }
                 }
 
                 if (nextend == 0) {
                     rf.seek(0);
                     line = new String(rf.readLine().getBytes(StandardCharsets.ISO_8859_1));
-                    try {
-                        LogDTO logDTO = this.parseToDto(line);
-                        if (!StringUtils.equals(logDTO.getTime(), lastTime)) {
-                            logs.add(0, logDTO);
-                        }
-                    } catch (IllegalStateException ignored) {
+                    LogDTO logDTO = this.parseToDto(line);
+                    if (logDTO.getTime().compareTo(lastTime) > 0) {
+                        logs.add(0, logDTO);
                     }
                 } else {
                     rf.seek(nextend - 1);//为下一次循环做准备
@@ -103,9 +101,11 @@ public class BotServiceImpl implements BotService {
             e.printStackTrace();
         }
 
-        redisUtil.setString("log:" + sessionId + ":" + botId, logs.get(logs.size() - 1).getTime());
+        if (logs.size() != 0) {
+            redisUtil.setString("log:" + sessionId + ":" + port, logs.get(logs.size() - 1).getTime());
+        }
 
-        return ResultBean.ok("sessionId", logs);
+        return ResultBean.ok(sessionId, logs);
     }
 
     @Override
@@ -135,8 +135,11 @@ public class BotServiceImpl implements BotService {
 
     @Override
     public ResultBean<String> add(BotDTO bot) {
-        File src = new File(botTemplatesPath + "/go-cqhttp");
-        File tar = new File(botAppPath + bot.getServersHttpPort());
+        String templatePath = botUtil.getTemplatePath();
+        String botPath = botUtil.getBotPath(String.valueOf(bot.getServersHttpPort()));
+
+        File src = new File(templatePath + "/go-cqhttp");
+        File tar = new File(botPath);
         if (!tar.exists()) {
             @SuppressWarnings("unused") boolean mkdirs = tar.mkdirs();
         }
@@ -158,8 +161,8 @@ public class BotServiceImpl implements BotService {
             StreamCloseUtil.close(inputStream, outputStream);
         }
 
-        File ftl = new File(botTemplatesPath);
-        File yml = new File(botAppPath + bot.getServersHttpPort() + "/config.yml");
+        File ftl = new File(templatePath);
+        File yml = new File(botPath + "/config.yml");
         Writer out = null;
         try {
             Configuration cfg = new Configuration(Configuration.VERSION_2_3_31);
@@ -180,10 +183,10 @@ public class BotServiceImpl implements BotService {
             template.process(root, out);
             // 执行
             String command = "chmod +x ./go-cqhttp";
-            Runtime.getRuntime().exec(command, new String[]{}, new File(botAppPath + bot.getServersHttpPort()));
+            Runtime.getRuntime().exec(command, new String[]{}, new File(botPath));
             command = "nohup ./go-cqhttp & ";
             System.out.println(command);
-            Runtime.getRuntime().exec(command, new String[]{}, new File(botAppPath + bot.getServersHttpPort()));
+            Runtime.getRuntime().exec(command, new String[]{}, new File(botPath));
         } catch (IOException | TemplateException ignored) {
             // TODO 错误处理：删除相关的文件
         } finally {
@@ -205,8 +208,8 @@ public class BotServiceImpl implements BotService {
 
     @Override
     public ResultBean<String> qrcode(String port) {
-        String path = botAppPath + port + "/qrcode.png";
-        System.out.println(path);
+        String botPath = botUtil.getBotPath(port);
+        String path = botPath + "/qrcode.png";
         File qrcode = new File(path);
 
         if (!qrcode.exists()) {
@@ -214,7 +217,7 @@ public class BotServiceImpl implements BotService {
         }
 
         InputStream inputStream;
-        byte[]bytes = null;
+        byte[] bytes = null;
         try {
             inputStream = new FileInputStream(qrcode);
             bytes = new byte[inputStream.available()];

@@ -10,7 +10,7 @@ import java.util.List;
 public interface BotService {
     ResultBean<List<Bot>> list();
 
-    ResultBean<List<LogDTO>> logs(String botId, String sessionId);
+    ResultBean<List<LogDTO>> logs(String port, String sessionId);
 
     ResultBean<Integer> getAvailablePort(Integer port);
 

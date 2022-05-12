@@ -37,10 +37,10 @@ public class BotController {
         return botService.qrcode(port);
     }
 
-    @RequestMapping(value = "log", method = RequestMethod.GET)
-    public ResultBean<List<LogDTO>> logs(@RequestParam(name = "botId") String botId,
+    @RequestMapping(value = "start/log", method = RequestMethod.GET)
+    public ResultBean<List<LogDTO>> logs(@RequestParam(name = "port") String port,
                                          @RequestParam(name = "sessionId", required = false) String sessionId) {
-        return botService.logs(botId, sessionId);
+        return botService.logs(port, sessionId);
     }
 
 
