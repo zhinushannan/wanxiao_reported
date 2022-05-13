@@ -3,11 +3,10 @@ package club.kwcoder.report.controller;
 import club.kwcoder.report.dataobject.Account;
 import club.kwcoder.report.dataobject.Clazz;
 import club.kwcoder.report.dataobject.Student;
-import club.kwcoder.report.dataobject.StudentExample;
 import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.model.dto.DataInsertDTO;
-import club.kwcoder.report.model.dto.ModelDTO;
+import club.kwcoder.report.model.dto.TeacherDTO;
 import club.kwcoder.report.service.DataManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +57,7 @@ public class DataManagerController {
     }
 
     @RequestMapping(value = "account/list", method = RequestMethod.POST)
-    public ResultBean<PageBean<ModelDTO>> accountList(@RequestBody PageBean<ModelDTO> pageBean) {
+    public ResultBean<PageBean<TeacherDTO>> accountList(@RequestBody PageBean<TeacherDTO> pageBean) {
         return dataManagerService.accountList(pageBean);
     }
 

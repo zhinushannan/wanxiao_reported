@@ -26,8 +26,12 @@ public class Clazz implements Serializable {
 
     private String groupId;
 
-    private String botId;
+    private String botPort;
 
+    /**
+     * 开启撤回 1 
+关闭撤回 0
+     */
     private Integer delete;
 
     private static final long serialVersionUID = 1L;

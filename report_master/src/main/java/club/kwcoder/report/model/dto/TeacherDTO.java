@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Accessors(chain = true)
-public class ModelDTO implements Serializable {
+public class TeacherDTO implements Serializable {
 
     private String teacherName;
 

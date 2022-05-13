@@ -6,7 +6,7 @@ import club.kwcoder.report.dataobject.Student;
 import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.model.dto.DataInsertDTO;
-import club.kwcoder.report.model.dto.ModelDTO;
+import club.kwcoder.report.model.dto.TeacherDTO;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public interface DataManagerService {
 
     ResultBean<String> studentModify(Student student);
 
-    ResultBean<PageBean<ModelDTO>> accountList(PageBean<ModelDTO> pageBean);
+    ResultBean<PageBean<TeacherDTO>> accountList(PageBean<TeacherDTO> pageBean);
 
     ResultBean<String> accountSave(Account account);
 

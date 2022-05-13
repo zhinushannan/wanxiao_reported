@@ -4,23 +4,22 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @Accessors(chain = true)
-public class BotDTO implements Serializable {
+public class GroupDTO implements Serializable {
 
-    private String botId;
+    private String groupId;
 
-    private Integer port;
+    private String clazzName;
+
+    private String mark;
 
     /**
-     * 1正常，0停止
-
+     * 1 在群内
+     * 0 不在群内
      */
-    private Integer status;
-
-    private List<String> clazz;
+    private Boolean isMember;
 
     private static final long serialVersionUID = 1L;
 

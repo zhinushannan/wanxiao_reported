@@ -51,64 +51,12 @@ const routes = [
                 component: () => import( /* webpackChunkName: "data-insert" */ "../views/bot/add.vue")
             },
             {
-                path: "/charts",
-                name: "basecharts",
+                path: "/bot/manager",
+                name: "bot-manager",
                 meta: {
-                    title: '图表'
+                    title: "机器人管理"
                 },
-                component: () => import ( /* webpackChunkName: "charts" */ "../views/BaseCharts.vue")
-            }, {
-                path: "/form",
-                name: "baseform",
-                meta: {
-                    title: '表单'
-                },
-                component: () => import ( /* webpackChunkName: "form" */ "../views/BaseForm.vue")
-            }, {
-                path: "/tabs",
-                name: "tabs",
-                meta: {
-                    title: 'tab标签'
-                },
-                component: () => import ( /* webpackChunkName: "tabs" */ "../views/Tabs.vue")
-            },
-            {
-                path: "/permission",
-                name: "permission",
-                meta: {
-                    title: '权限管理',
-                    permission: true
-                },
-                component: () => import ( /* webpackChunkName: "permission" */ "../views/Permission.vue")
-            },
-            {
-                path: "/upload",
-                name: "upload",
-                meta: {
-                    title: '上传插件'
-                },
-                component: () => import ( /* webpackChunkName: "upload" */ "../views/Upload.vue")
-            }, {
-                path: '/404',
-                name: '404',
-                meta: {
-                    title: '找不到页面'
-                },
-                component: () => import (/* webpackChunkName: "404" */ '../views/404.vue')
-            }, {
-                path: '/403',
-                name: '403',
-                meta: {
-                    title: '没有权限'
-                },
-                component: () => import (/* webpackChunkName: "403" */ '../views/403.vue')
-            }, {
-                path: '/user',
-                name: 'user',
-                meta: {
-                    title: '个人中心'
-                },
-                component: () => import (/* webpackChunkName: "user" */ '../views/User.vue')
+                component: () => import( /* webpackChunkName: "data-insert" */ "../views/bot/manager.vue")
             },
         ]
     }, {

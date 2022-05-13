@@ -10,7 +10,7 @@ import club.kwcoder.report.mapper.batch.StudentBatchDao;
 import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.model.dto.DataInsertDTO;
-import club.kwcoder.report.model.dto.ModelDTO;
+import club.kwcoder.report.model.dto.TeacherDTO;
 import club.kwcoder.report.service.DataManagerService;
 import cn.afterturn.easypoi.csv.CsvImportUtil;
 import cn.afterturn.easypoi.csv.entity.CsvImportParams;
@@ -25,7 +25,6 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,7 +56,7 @@ public class DataManagerServiceImpl implements DataManagerService {
         }
 
         LocalDate tomorrow = LocalDate.now().plusDays(1);
-        Clazz clazz = new Clazz(dataInsert.getClazzName(), dataInsert.getTeacherName(), String.format("%s.%s.%s", tomorrow.getYear(), tomorrow.getMonthValue(), tomorrow.getDayOfMonth()), dataInsert.getDeptId(), dataInsert.getGroupId(), dataInsert.getBotId(), dataInsert.getDelete());
+        Clazz clazz = new Clazz(dataInsert.getClazzName(), dataInsert.getTeacherName(), String.format("%s.%s.%s", tomorrow.getYear(), tomorrow.getMonthValue(), tomorrow.getDayOfMonth()), dataInsert.getDeptId(), dataInsert.getGroupId(), dataInsert.getBotPort(), dataInsert.getDelete());
 
         CsvImportParams importParams = new CsvImportParams();
         importParams.setTitleRows(0);
@@ -105,7 +104,7 @@ public class DataManagerServiceImpl implements DataManagerService {
                 .setTeacherName(dataInsert.getTeacherName())
                 .setDeptId(dataInsert.getDeptId())
                 .setGroupId(dataInsert.getGroupId())
-                .setBotId(dataInsert.getBotId())
+                .setBotPort(dataInsert.getBotPort())
                 .setDelete(dataInsert.getDelete());
         clazzDao.updateByPrimaryKeySelective(clazz);
         return ResultBean.ok("修改成功！", null);
@@ -130,19 +129,19 @@ public class DataManagerServiceImpl implements DataManagerService {
     }
 
     @Override
-    public ResultBean<PageBean<ModelDTO>> accountList(PageBean<ModelDTO> pageBean) {
+    public ResultBean<PageBean<TeacherDTO>> accountList(PageBean<TeacherDTO> pageBean) {
         PageHelper.startPage(pageBean.getPage(), pageBean.getSize());
 
         List<Account> accounts = accountDao.selectByExample(new AccountExample());
 
-        List<ModelDTO> list = new ArrayList<>();
+        List<TeacherDTO> list = new ArrayList<>();
         accounts.forEach(account -> {
             ClazzExample example = new ClazzExample();
             example.createCriteria().andTeacherNameEqualTo(account.getTeacherName());
             List<String> clazz = new ArrayList<>();
             clazzDao.selectByExample(example).forEach(e -> clazz.add(e.getClazzName()));
 
-            list.add(new ModelDTO()
+            list.add(new TeacherDTO()
                     .setTeacherName(account.getTeacherName())
                     .setUsername(account.getUsername())
                     .setPassword(account.getPassword())

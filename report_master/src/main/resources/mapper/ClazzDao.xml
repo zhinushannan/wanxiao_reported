@@ -7,7 +7,7 @@
     <result column="date" jdbcType="VARCHAR" property="date" />
     <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
     <result column="group_id" jdbcType="VARCHAR" property="groupId" />
-    <result column="bot_id" jdbcType="VARCHAR" property="botId" />
+    <result column="bot_port" jdbcType="VARCHAR" property="botPort" />
     <result column="delete" jdbcType="INTEGER" property="delete" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    clazz_name, teacher_name, `date`, dept_id, group_id, bot_id, `delete`
+    clazz_name, teacher_name, `date`, dept_id, group_id, bot_port, `delete`
   </sql>
   <select id="selectByExample" parameterType="club.kwcoder.report.dataobject.ClazzExample" resultMap="BaseResultMap">
     select
@@ -103,10 +103,10 @@
   </delete>
   <insert id="insert" parameterType="club.kwcoder.report.dataobject.Clazz">
     insert into clazz (clazz_name, teacher_name, `date`, 
-      dept_id, group_id, bot_id, 
+      dept_id, group_id, bot_port, 
       `delete`)
     values (#{clazzName,jdbcType=VARCHAR}, #{teacherName,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR}, 
-      #{deptId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{botId,jdbcType=VARCHAR}, 
+      #{deptId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{botPort,jdbcType=VARCHAR}, 
       #{delete,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="club.kwcoder.report.dataobject.Clazz">
@@ -127,8 +127,8 @@
       <if test="groupId != null">
         group_id,
       </if>
-      <if test="botId != null">
-        bot_id,
+      <if test="botPort != null">
+        bot_port,
       </if>
       <if test="delete != null">
         `delete`,
@@ -150,8 +150,8 @@
       <if test="groupId != null">
         #{groupId,jdbcType=VARCHAR},
       </if>
-      <if test="botId != null">
-        #{botId,jdbcType=VARCHAR},
+      <if test="botPort != null">
+        #{botPort,jdbcType=VARCHAR},
       </if>
       <if test="delete != null">
         #{delete,jdbcType=INTEGER},
@@ -182,8 +182,8 @@
       <if test="record.groupId != null">
         group_id = #{record.groupId,jdbcType=VARCHAR},
       </if>
-      <if test="record.botId != null">
-        bot_id = #{record.botId,jdbcType=VARCHAR},
+      <if test="record.botPort != null">
+        bot_port = #{record.botPort,jdbcType=VARCHAR},
       </if>
       <if test="record.delete != null">
         `delete` = #{record.delete,jdbcType=INTEGER},
@@ -200,7 +200,7 @@
       `date` = #{record.date,jdbcType=VARCHAR},
       dept_id = #{record.deptId,jdbcType=VARCHAR},
       group_id = #{record.groupId,jdbcType=VARCHAR},
-      bot_id = #{record.botId,jdbcType=VARCHAR},
+      bot_port = #{record.botPort,jdbcType=VARCHAR},
       `delete` = #{record.delete,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -221,8 +221,8 @@
       <if test="groupId != null">
         group_id = #{groupId,jdbcType=VARCHAR},
       </if>
-      <if test="botId != null">
-        bot_id = #{botId,jdbcType=VARCHAR},
+      <if test="botPort != null">
+        bot_port = #{botPort,jdbcType=VARCHAR},
       </if>
       <if test="delete != null">
         `delete` = #{delete,jdbcType=INTEGER},
@@ -236,7 +236,7 @@
       `date` = #{date,jdbcType=VARCHAR},
       dept_id = #{deptId,jdbcType=VARCHAR},
       group_id = #{groupId,jdbcType=VARCHAR},
-      bot_id = #{botId,jdbcType=VARCHAR},
+      bot_port = #{botPort,jdbcType=VARCHAR},
       `delete` = #{delete,jdbcType=INTEGER}
     where clazz_name = #{clazzName,jdbcType=VARCHAR}
   </update>

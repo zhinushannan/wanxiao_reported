@@ -46,8 +46,8 @@ export default {
         title: "系统首页",
       },
       {
-        icon: "el-icon-lx-home",
-        index: "11",
+        icon: "el-icon-s-data",
+        index: "1",
         title: "数据管理",
         subs: [
           {
@@ -65,8 +65,8 @@ export default {
         ]
       },
       {
-        icon: "el-icon-lx-home",
-        index: "12",
+        icon: "el-icon-coordinate",
+        index: "2",
         title: "机器人管理",
         subs: [
           {
@@ -74,70 +74,21 @@ export default {
             title: "增加机器人",
           },
           {
-            index: "/form",
-            title: "日志管理",
-          },
-          {
-            index: "/form",
-            title: "增删管理",
-          }
-        ]
-      },
-      {
-        icon: "el-icon-lx-home",
-        index: "13",
-        title: "统计",
-        subs: [
-          {
-            index: "/form",
-            title: "时间统计",
-          },
-          {
-            index: "/form",
-            title: "超时统计",
+            index: "/bot/manager",
+            title: "机器人管理",
           },
         ]
       },
       {
-        icon: "el-icon-lx-copy",
-        index: "/tabs",
-        title: "tab选项卡",
-      },
-      {
-        icon: "el-icon-lx-calendar",
+        icon: "el-icon-link",
         index: "3",
-        title: "表单相关",
+        title: "测试",
         subs: [
           {
             index: "/form",
-            title: "基本表单",
+            title: "通知测试",
           },
-          {
-            index: "/upload",
-            title: "文件上传",
-          },
-
-        ],
-      },
-      {
-        icon: "el-icon-pie-chart",
-        index: "/charts",
-        title: "schart图表",
-      },
-      {
-        icon: "el-icon-lx-warn",
-        index: "7",
-        title: "错误处理",
-        subs: [
-          {
-            index: "/permission",
-            title: "权限测试",
-          },
-          {
-            index: "/404",
-            title: "404页面",
-          },
-        ],
+        ]
       },
     ];
 
