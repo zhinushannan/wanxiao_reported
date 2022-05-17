@@ -70,7 +70,7 @@ CREATE TABLE `bot` (
 
 LOCK TABLES `bot` WRITE;
 /*!40000 ALTER TABLE `bot` DISABLE KEYS */;
-INSERT INTO `bot` VALUES ('2793287265',5700,0);
+INSERT INTO `bot` VALUES ('2793287265',5701,1);
 /*!40000 ALTER TABLE `bot` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,7 +90,7 @@ CREATE TABLE `bot_request` (
   `comment` varchar(255) DEFAULT NULL,
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`request_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,6 +99,7 @@ CREATE TABLE `bot_request` (
 
 LOCK TABLES `bot_request` WRITE;
 /*!40000 ALTER TABLE `bot_request` DISABLE KEYS */;
+INSERT INTO `bot_request` VALUES (23,'1652421967837761','2793287265',0,'1377875184','','2022-05-13 14:06:08');
 /*!40000 ALTER TABLE `bot_request` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -115,7 +116,7 @@ CREATE TABLE `clazz` (
   `date` varchar(255) NOT NULL,
   `dept_id` varchar(255) NOT NULL,
   `group_id` varchar(255) NOT NULL,
-  `bot_id` varchar(255) NOT NULL,
+  `bot_port` varchar(255) NOT NULL,
   `delete` int NOT NULL COMMENT '开启撤回 1 \n关闭撤回 0',
   PRIMARY KEY (`clazz_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -127,7 +128,7 @@ CREATE TABLE `clazz` (
 
 LOCK TABLES `clazz` WRITE;
 /*!40000 ALTER TABLE `clazz` DISABLE KEYS */;
-INSERT INTO `clazz` VALUES ('18数据','赵思文','2022.4.10','147331','825909952','5701',1),('19数据',NULL,'2022.5.10','1234','1234','5700',1),('19软件2','赵思文','2022.4.10','147372','1087894326','5700',0),('20数据','赵思文','2022.4.10','236630','945219184','5700',1),('20软件2','赵思文','2022.4.10','236628','953152455','5700',0);
+INSERT INTO `clazz` VALUES ('18数据',NULL,'2022.4.10','147331','825909952','5701',1),('19数据',NULL,'2022.5.10','1234','1234','5700',1),('19软件2',NULL,'2022.4.10','147372','1087894326','5700',0),('20数据',NULL,'2022.4.10','236630','945219184','5700',1),('20软件2','赵思文','2022.4.10','236628','953152455','5700',0);
 /*!40000 ALTER TABLE `clazz` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -182,7 +183,7 @@ CREATE TABLE `group_list` (
 
 LOCK TABLES `group_list` WRITE;
 /*!40000 ALTER TABLE `group_list` DISABLE KEYS */;
-INSERT INTO `group_list` VALUES ('2793287265','1003209156','小窝',200,6,NULL),('2793287265','1030838056','*',200,4,NULL),('2793287265','369746384','实干青年 - 老年人活动中心',200,8,NULL);
+INSERT INTO `group_list` VALUES ('2793287265','1003209156','小窝',200,6,NULL),('2793287265','1030838056','*',200,4,NULL),('2793287265','369746384','实干青年 - 老年人活动中心',200,11,NULL);
 /*!40000 ALTER TABLE `group_list` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,31 +212,6 @@ CREATE TABLE `message` (
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `remove`
---
-
-DROP TABLE IF EXISTS `remove`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `remove` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `dept_id` varchar(255) NOT NULL,
-  `student_name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `remove`
---
-
-LOCK TABLES `remove` WRITE;
-/*!40000 ALTER TABLE `remove` DISABLE KEYS */;
-INSERT INTO `remove` VALUES (1,'236628','徐志龙'),(2,'236628','陈烨'),(3,'236628','徐冰清'),(5,'236628','黄潇'),(6,'236628','崔波'),(7,'236628','李锦松'),(8,'236628','严雯'),(9,'236628','刘嗣帅'),(10,'236628','方浩扬'),(11,'236628','孙创业'),(12,'236628','张茂'),(13,'236628','郑梦可'),(14,'236628','王玮瑶'),(15,'236628','赵林林'),(16,'236628','郭雨钿'),(17,'236628','张凤飞'),(18,'236628','范金生'),(19,'236628','王诗琪'),(20,'236628','赵惠杰'),(21,'236628','徐程'),(22,'236628','张曼'),(23,'236628','戴衍'),(24,'236628','马晨曦'),(25,'236628','何伟'),(26,'236628','包智予'),(27,'236628','陆小茜'),(28,'236628','蔡紫旋'),(29,'236628','蒋益'),(30,'236628','关星月'),(31,'236628','张阳'),(32,'236628','朱茜茜'),(33,'236628','李雅婧'),(34,'236628','吴京'),(35,'236628','孙爱琳'),(36,'236628','陈华俊'),(37,'236628','吴紫茜'),(38,'236628','王迪'),(39,'236628','行孟杰'),(40,'236628','李晓婧'),(41,'236628','陈蝶'),(42,'236628','王嘉明'),(43,'236628','李苏杰'),(44,'236628','陈琦'),(45,'236628','张洪婉'),(46,'236628','谢逸凡'),(47,'236628','陆雅婷'),(48,'236628','马新萍'),(49,'236628','陈爽'),(50,'236628','彭海洋'),(51,'236628','张磊'),(52,'236628','沈依青'),(53,'236628','吴征昊'),(54,'236628','李雨欣'),(55,'236628','黄艳阳'),(56,'236628','孙重祎'),(57,'236628','房晨宇'),(58,'236628','江舟'),(59,'236628','席浩迅'),(60,'236628','李晓同');
-/*!40000 ALTER TABLE `remove` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -274,4 +250,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-09 12:43:33
+-- Dump completed on 2022-05-17  1:10:35

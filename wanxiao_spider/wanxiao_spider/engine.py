@@ -26,7 +26,7 @@ def get_unfinished_clazz():
     tomorrow = now + datetime.timedelta(days=1)
     date = f'{tomorrow.year}.{tomorrow.month}.{tomorrow.day + 1}'
     # select clazz which report date not equal tomorrow str
-    unfinished_clazz_sql = f'select clazz_name, teacher_name, dept_id, group_id, bot_id, `delete` from clazz where `date`<>"{date}"'
+    unfinished_clazz_sql = f'select clazz_name, teacher_name, dept_id, group_id, bot_port, `delete` from clazz where `date`<>"{date}" and teacher_name is not null '
     cursor.execute(unfinished_clazz_sql)
     unfinished_clazz = list(cursor.fetchall())
     return unfinished_clazz
@@ -72,7 +72,7 @@ def get_clazz_info(unfinished_clazz):
             }
             clazz_info[teacher]['clazz'] = {}
         # select student of this class
-        select_student = f'select student_name, student_qq from student where student_clazz="{clazz}"'
+        select_student = f'select student_name, student_qq from student where student_clazz="{clazz}" and remove = 0'
         cursor.execute(select_student)
         student_list = list(cursor.fetchall())
         # student_info is list fill with {name: qq}
@@ -80,33 +80,29 @@ def get_clazz_info(unfinished_clazz):
         for j in student_list:
             student_info[j[0]] = j[1]
 
+        select_remove_list = f'select student_name from student where remove = 1'
+        cursor.execute(select_remove_list)
+        remove_tuple_list = list(cursor.fetchall())
+        remove_list = []
+        for j in remove_tuple_list:
+            remove_list.append(j[0])
+
         clazz_info[teacher]['clazz'][clazz] = {
             'dept_id': i[2],
             'group_id': i[3],
             'bot_id': i[4],
             'delete': i[5] == 1,
-            'student_info': student_info
+            'student_info': student_info,
+            'remove_list': remove_list
         }
     return clazz_info
-
-
-def get_remove():
-    select_remove_sql = "select dept_id, student_name from remove"
-    cursor.execute(select_remove_sql)
-    remove_list = list(cursor.fetchall())
-    remove_dict = {}
-    for i in remove_list:
-        if i[0] not in list(remove_dict.keys()):
-            remove_dict[i[0]] = []
-        remove_dict[i[0]].append(i[1])
-    return remove_dict
 
 
 if __name__ == '__main__':
     # get connection to mysql
     try:
         connect_mysql = pymysql.connect(host='localhost', port=3306,
-                              user='root', passwd='09140727', db='wanxiao')
+                                        user='root', passwd='09140727', db='report')
     except OperationalError as e:
         log.error(e)
         sys.exit(-1)
@@ -141,14 +137,13 @@ if __name__ == '__main__':
     unfinished_clazz = get_unfinished_clazz()
     log.info(f"获取到未完成打卡的班级：{str(list(map(lambda x: x[0], unfinished_clazz)))}")
     clazz_info = get_clazz_info(unfinished_clazz)
-    remove_dict = get_remove()
 
     teacher_list = list(clazz_info.keys())
 
     for i in teacher_list:
         try:
             log.info(f"开始推送 [{i}]，{list(clazz_info[i]['clazz'].keys())}")
-            AutoReport(i, clazz_info[i]['account_data'], clazz_info[i]['clazz'], cursor, redis, remove_dict, channel).run()
+            AutoReport(i, clazz_info[i]['account_data'], clazz_info[i]['clazz'], cursor, redis, channel).run()
         except Exception as e:
             log.error(e)
 

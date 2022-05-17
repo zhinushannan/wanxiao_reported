@@ -28,7 +28,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -282,6 +281,9 @@ public class BotServiceImpl implements BotService {
                         .setIsMember(groupIds.contains(groupList.getGroupId())));
             }
         });
+
+
+
         return ResultBean.ok("查询成功！", groupLists);
     }
 

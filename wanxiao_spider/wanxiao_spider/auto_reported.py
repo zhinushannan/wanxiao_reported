@@ -12,7 +12,7 @@ log = HandleLog()
 
 
 class AutoReport:
-    def __init__(self, teacher, account_info, clazz, cursor, redis, remove_dict, channel):
+    def __init__(self, teacher, account_info, clazz, cursor, redis, channel):
         """
         :param teacher: teacher name
         :param account_info: {'username': username, 'securitycode': password, 'captcha': ''}
@@ -30,7 +30,7 @@ class AutoReport:
         :param redis: redis
         :param channel: mq channel
         """
-        self.teacher, self.account_info, self.clazz, self.cursor, self.redis, self.remove_dict, self.channel = teacher, account_info, clazz, cursor, redis, remove_dict, channel
+        self.teacher, self.account_info, self.clazz, self.cursor, self.redis, self.channel = teacher, account_info, clazz, cursor, redis, channel
         self.login_url = 'https://reported.17wanxiao.com/admin/login'
         self.headers = {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
@@ -81,15 +81,11 @@ class AutoReport:
         unreported_url = f'https://reported.17wanxiao.com/student/list2?undo=0&reportTime={self.now.year + 1}-{str(self.now.month).zfill(2)}-{str(self.now.day).zfill(2)}&_search=false&limit=60&page=1&order=asc&deptId=' + dept_id
         return self.requests_get(unreported_url).json()['page']['records']
 
-    def get_msg(self, unreported_list, student_info, dept_id):
-        removes = None
-        if dept_id in list(self.remove_dict.keys()):
-            removes = list(self.remove_dict.values())[0]
-
+    def get_msg(self, unreported_list, student_info, remove_list, dept_id):
         msg = ""
         for i in unreported_list:
             name = i['name']
-            if removes is not None and name in removes:
+            if remove_list is not None and name in remove_list:
                 continue
             msg = msg + f'[CQ:at,qq={student_info[name]},name={name}]\t'
 
@@ -135,11 +131,11 @@ class AutoReport:
             log.debug(f"开始推送{i}")
             try:
                 unreported_url = self.get_unreported_list(self.clazz[i]["dept_id"])
-                msg = self.get_msg(unreported_url, self.clazz[i]["student_info"], self.clazz[i]["dept_id"])
+                msg = self.get_msg(unreported_url, self.clazz[i]["student_info"], self.clazz[i]["remove_list"], self.clazz[i]["dept_id"])
             except Exception as e:
                 log.error(f"获取名单失败，请检查网络是否通常或是否更换班主任！错误信息：{str(e)}")
                 sys.exit(-1)
-            log.debug(f"{self.clazz[i]['group_id']} \n {msg} \n {self.clazz[i]['delete']} \n {str(self.clazz[i]['bot_id'])}")
+            log.debug(f"{self.clazz[i]['group_id']} \\n {msg} \\n {self.clazz[i]['delete']} \\n {str(self.clazz[i]['bot_id'])}")
             try:
                 self.push_msg(str(self.clazz[i]["group_id"]), msg, self.clazz[i]["delete"],
                               str(self.clazz[i]["bot_id"]))
