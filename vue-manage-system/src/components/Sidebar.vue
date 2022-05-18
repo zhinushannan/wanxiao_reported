@@ -85,7 +85,7 @@ export default {
         title: "测试",
         subs: [
           {
-            index: "/form",
+            index: "/report/test",
             title: "通知测试",
           },
         ]

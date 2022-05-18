@@ -58,6 +58,14 @@ const routes = [
                 },
                 component: () => import( /* webpackChunkName: "data-insert" */ "../views/bot/manager.vue")
             },
+            {
+                path: "/report/test",
+                name: "report-test",
+                meta: {
+                    title: "通知测试"
+                },
+                component: () => import( /* webpackChunkName: "data-insert" */ "../views/test/test.vue")
+            },
         ]
     }, {
         path: "/login",
