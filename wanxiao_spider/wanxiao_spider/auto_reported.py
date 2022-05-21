@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import base64
 import datetime
 import json
@@ -12,7 +14,7 @@ log = HandleLog()
 
 
 class AutoReport:
-    def __init__(self, teacher, account_info, clazz, cursor, redis, channel):
+    def __init__(self, teacher, account_info, clazz, cursor, redis, channel, report_type='0'):
         """
         :param teacher: teacher name
         :param account_info: {'username': username, 'securitycode': password, 'captcha': ''}
@@ -22,7 +24,6 @@ class AutoReport:
                     'dept_id': dept_id,
                     'group_id': group_id,
                     'bot_id': bot_id,
-                    'group_id': group_id,
                     'student_info': {name1: qq1, name2: qq2, ...}
                 }
             }
@@ -30,7 +31,7 @@ class AutoReport:
         :param redis: redis
         :param channel: mq channel
         """
-        self.teacher, self.account_info, self.clazz, self.cursor, self.redis, self.channel = teacher, account_info, clazz, cursor, redis, channel
+        self.teacher, self.account_info, self.clazz, self.cursor, self.redis, self.channel, self.report_type = teacher, account_info, clazz, cursor, redis, channel, report_type
         self.login_url = 'https://reported.17wanxiao.com/admin/login'
         self.headers = {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36',
@@ -78,7 +79,11 @@ class AutoReport:
         return response.url == index_url
 
     def get_unreported_list(self, dept_id):
-        unreported_url = f'https://reported.17wanxiao.com/student/list2?undo=0&reportTime={self.now.year + 1}-{str(self.now.month).zfill(2)}-{str(self.now.day).zfill(2)}&_search=false&limit=60&page=1&order=asc&deptId=' + dept_id
+        if self.report_type == '0':
+            unreported_url = f'https://reported.17wanxiao.com/student/list2?undo=0&reportTime={self.now.year}-{str(self.now.month).zfill(2)}-{str(self.now.day).zfill(2)}&_search=false&limit=60&page=1&order=asc&deptId=' + dept_id
+        else:
+            unreported_url = f'https://reported.17wanxiao.com/student/list2?undo=0&reportTime={self.now.year}-{str(self.now.month).zfill(2)}-{str(self.now.day + 1).zfill(2)}&_search=false&limit=60&page=1&order=asc&deptId=' + dept_id
+
         return self.requests_get(unreported_url).json()['page']['records']
 
     def get_msg(self, unreported_list, student_info, remove_list, dept_id):
@@ -104,7 +109,7 @@ class AutoReport:
             "groupId": group_id,
             "msg": msg,
             "delete": delete,
-            "port": bot_id,
+            "port": bot_id
         }
         message_str = json.dumps(message)
         self.channel.basic_publish(exchange="", routing_key='wanxiao_report', body=message_str.encode())

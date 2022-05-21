@@ -47,7 +47,8 @@ class HandleLog:
         :return: 日志记录器
         """
         # 写入文件，如果文件超过1M大小时，切割日志文件，仅保留3个文件
-        logger_handler = RotatingFileHandler(filename=log_path, maxBytes=1 * 1024 * 1024, backupCount=3, encoding='utf-8')
+        logger_handler = RotatingFileHandler(filename=log_path, maxBytes=1 * 1024 * 1024, backupCount=3,
+                                             encoding='utf-8')
         return logger_handler
 
     @staticmethod

@@ -1,13 +1,5 @@
-import sys
-
-import pymysql
 import datetime
 import redis
-
-from pymysql import OperationalError
-from redis import ResponseError, AuthenticationError
-
-import pika
 
 from handle_log import HandleLog
 
@@ -16,7 +8,7 @@ from auto_reported import AutoReport
 log = HandleLog()
 
 
-def get_unfinished_clazz():
+def get_unfinished_clazz(cursor):
     """
     get unfinished reported class
     :return: list of (class_name, teacher_name, dept_id, qq_group_id)
@@ -32,7 +24,7 @@ def get_unfinished_clazz():
     return unfinished_clazz
 
 
-def get_clazz_info(unfinished_clazz):
+def get_clazz_info(cursor, unfinished_clazz):
     """
     :param unfinished_clazz:
     :return:
@@ -98,57 +90,17 @@ def get_clazz_info(unfinished_clazz):
     return clazz_info
 
 
-if __name__ == '__main__':
-    # get connection to mysql
-    try:
-        connect_mysql = pymysql.connect(host='localhost', port=3306,
-                                        user='root', passwd='09140727', db='report')
-    except OperationalError as e:
-        log.error(e)
-        sys.exit(-1)
-    else:
-        log.info("获取 Mysql 数据库链接成功！")
-    cursor = connect_mysql.cursor()
-
-    try:
-        redis = redis.Redis(host="127.0.0.1", port=6379, decode_responses=True)
-        redis.info()
-    except (ResponseError, AuthenticationError) as e:
-        cursor.close()
-        connect_mysql.close()
-        log.error(e)
-        sys.exit(-1)
-    else:
-        log.info("获取 Redis 数据库链接成功！")
-
-    try:
-        connect_mq = pika.BlockingConnection(pika.ConnectionParameters(host="localhost", port=5672))
-        channel = connect_mq.channel()
-        channel.queue_declare("wanxiao_report")
-    except:
-        log.error("消息队列链接失败！")
-        channel.close()
-        connect_mq.close()
-        redis.close()
-        cursor.close()
-        connect_mysql.close()
-        sys.exit(-1)
-
-    unfinished_clazz = get_unfinished_clazz()
+def run(cursor, connect_redis, channel):
+    unfinished_clazz = get_unfinished_clazz(cursor)
     log.info(f"获取到未完成打卡的班级：{str(list(map(lambda x: x[0], unfinished_clazz)))}")
-    clazz_info = get_clazz_info(unfinished_clazz)
+    clazz_info = get_clazz_info(cursor, unfinished_clazz)
 
     teacher_list = list(clazz_info.keys())
 
     for i in teacher_list:
         try:
             log.info(f"开始推送 [{i}]，{list(clazz_info[i]['clazz'].keys())}")
-            AutoReport(i, clazz_info[i]['account_data'], clazz_info[i]['clazz'], cursor, redis, channel).run()
+            AutoReport(i, clazz_info[i]['account_data'], clazz_info[i]['clazz'], cursor, connect_redis, channel).run()
         except Exception as e:
             log.error(e)
 
-    channel.close()
-    connect_mq.close()
-    redis.close()
-    cursor.close()
-    connect_mysql.close()
