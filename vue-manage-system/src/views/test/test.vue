@@ -24,14 +24,14 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item prop="category">
-          <el-select v-model="testForm.category" placeholder="类别">
+        <el-form-item prop="type">
+          <el-select v-model="testForm.type" placeholder="类别">
             <el-option label="今日" value="0"/>
-            <el-option label="全员" value="0"/>
+            <el-option label="全员" value="1"/>
           </el-select>
         </el-form-item>
-        <el-form-item prop="测试群聊群号">
-          <el-input v-model="testForm.testGroupId" placeholder="测试群聊（可选）"/>
+        <el-form-item prop="groupId">
+          <el-input v-model="testForm.groupId" placeholder="测试群聊（可选）"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">测试</el-button>
@@ -39,9 +39,14 @@
         </el-form-item>
       </el-form>
 
-      <textarea class="el-textarea__inner" style="width: 100%; height: 400px; resize: none;" disabled :value="logStr">
+      <div style="font-size: 12px; padding-bottom: 5px;">打卡提醒预览结果：</div>
+      <div class="el-textarea__inner" style="width: 100%; height: 200px; resize: none;overflow: scroll" disabled :innerHTML="msgShow" >
+      </div>
 
-      </textarea>
+      <div style="width: 1px; height: 10px;"></div>
+      <div style="font-size: 12px; padding-bottom: 5px;">打卡提醒结果源：</div>
+      <div class="el-textarea__inner" style="width: 100%; height: 200px; max-height: 200px; resize: none;;overflow: scroll" disabled :innerHTML="msgRaw">
+      </div>
 
     </div>
 
@@ -57,10 +62,11 @@ export default {
       testRules: [],
       testForm: {
         clazz: "",
-        category: "",
-        testGroupId: ""
+        type: "",
+        groupId: ""
       },
-      logStr: "",
+      msgShow: "",
+      msgRaw: "",
       clazz: []
     }
   },
@@ -74,6 +80,10 @@ export default {
     onSubmit() {
       let _this = this
 
+      _this.$axios.post("/test/do", _this.testForm).then((resp) => {
+        _this.msgShow = resp["data"]["data"]["show"]
+        _this.msgRaw = resp["data"]["data"]["raw"]
+      })
 
     },
     onReset() {

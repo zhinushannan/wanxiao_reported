@@ -50,7 +50,8 @@ def run(cursor, connect_redis, channel, clazz_name, report_type, bot_id):
     clazz[clazz_name]["bot_id"] = bot_id
     clazz[clazz_name]["delete"] = 0
     log.info(f"开始推送 [{teacher}]，{clazz}")
-    AutoReport(teacher, account_info, clazz, cursor, connect_redis, channel, report_type).run()
+    msg = AutoReport(teacher, account_info, clazz, cursor, connect_redis, channel, report_type).run()
+    return msg
 
 
 

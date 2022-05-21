@@ -121,6 +121,8 @@ class AutoReport:
         # requests.get(f"http://127.0.0.1:{bot_id}/send_group_msg?group_id={group_id}&message={msg}")
 
     def run(self):
+        msg = ""
+
         log.info("尝试使用缓存cookie")
         isAble = self.check_cookie()
         if not isAble:
@@ -147,3 +149,5 @@ class AutoReport:
             except Exception as e:
                 log.debug(f"发送失败，请检查账号是否正常登录或是否被风控！错误信息：{str(e)}")
                 log.error(f"发送失败，请检查账号是否正常登录或是否被风控！错误信息：{str(e)}")
+
+        return msg

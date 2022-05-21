@@ -1,28 +1,38 @@
 package club.kwcoder.report;
 
-import club.kwcoder.report.model.bean.ResultBean;
-import club.kwcoder.report.model.dto.LogDTO;
-import club.kwcoder.report.service.BotService;
-import club.kwcoder.report.utils.BotUtil;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.RandomAccessFile;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 class ReportApplicationTests {
 
     @Autowired
-    private BotService botService;
+    private RestTemplate restTemplate;
 
     @Test
     void contextLoads() {
-        String a = "[2022-05-12 19:47:46]";
-        String b = "[2022-05-12 19:46:59]";
-        System.out.println(a.compareTo(b));
+
+        String url = "http://127.0.0.1:5000/appoint_clazz?clazz_name=20软件2&report_type=1&bot_id=123";
+        ResponseEntity<Map> forEntity = restTemplate.getForEntity(url, Map.class);
+
+        if (forEntity.hasBody()) {
+            Map<String, String> body = forEntity.getBody();
+            String raw = body.get("raw");
+            String show = body.get("show");
+
+            System.out.println(raw);
+            System.out.println(show);
+
+        }
+
     }
 
 }

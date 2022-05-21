@@ -9,5 +9,20 @@
       "name": "path.bot.app",
       "type": "java.lang.String",
       "description": "机器人的应用实例目录."
+    },
+    {
+      "name": "path.engine",
+      "type": "java.lang.String",
+      "description": "引擎."
+    },
+    {
+      "name": "path.engine.total",
+      "type": "java.lang.String",
+      "description": "通知引擎的脚本路径."
+    },
+    {
+      "name": "path.engine.clazz",
+      "type": "java.lang.String",
+      "description": "按照班级通知引擎的脚本路径."
     }
   ] }
