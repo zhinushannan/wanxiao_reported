@@ -2,6 +2,7 @@ package club.kwcoder.report.service;
 
 import club.kwcoder.report.dataobject.Account;
 import club.kwcoder.report.dataobject.Clazz;
+import club.kwcoder.report.dataobject.ReportTime;
 import club.kwcoder.report.dataobject.Student;
 import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
@@ -28,4 +29,6 @@ public interface DataManagerService {
     ResultBean<String> accountSave(Account account);
 
     ResultBean<String> accountDelete(String teacherName);
+
+    ResultBean<List<Integer>> reportList(String clazzName);
 }

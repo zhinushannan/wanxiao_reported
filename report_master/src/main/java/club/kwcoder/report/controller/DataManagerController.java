@@ -2,6 +2,7 @@ package club.kwcoder.report.controller;
 
 import club.kwcoder.report.dataobject.Account;
 import club.kwcoder.report.dataobject.Clazz;
+import club.kwcoder.report.dataobject.ReportTime;
 import club.kwcoder.report.dataobject.Student;
 import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
@@ -38,6 +39,11 @@ public class DataManagerController {
     @RequestMapping(value = "class/delete", method = RequestMethod.GET)
     public ResultBean<String> clazzDelete(@RequestParam("class") String clazzName) {
         return dataManagerService.deleteClazz(clazzName);
+    }
+
+    @RequestMapping(value = "report/list", method = RequestMethod.GET)
+    public ResultBean<List<Integer>> reportList(@RequestParam("class") String clazzName) {
+        return dataManagerService.reportList(clazzName);
     }
 
     @RequestMapping(value = "student/list", method = RequestMethod.GET)

@@ -3,6 +3,7 @@ package club.kwcoder.report.service.impl;
 import club.kwcoder.report.dataobject.*;
 import club.kwcoder.report.mapper.AccountDao;
 import club.kwcoder.report.mapper.ClazzDao;
+import club.kwcoder.report.mapper.ReportTimeDao;
 import club.kwcoder.report.mapper.StudentDao;
 import club.kwcoder.report.mapper.batch.AccountCustomDao;
 import club.kwcoder.report.mapper.batch.ClazzCustomDao;
@@ -47,6 +48,9 @@ public class DataManagerServiceImpl implements DataManagerService {
 
     @Autowired
     private AccountCustomDao accountCustomDao;
+
+    @Autowired
+    private ReportTimeDao reportTimeDao;
 
     @Override
     @Transactional
@@ -182,5 +186,17 @@ public class DataManagerServiceImpl implements DataManagerService {
         }
 
         return ResultBean.ok("删除成功，请注意设置相应班级的新辅导员！", null);
+    }
+
+    @Override
+    public ResultBean<List<Integer>> reportList(String clazzName) {
+        ReportTimeExample reportTimeExample = new ReportTimeExample();
+        reportTimeExample.createCriteria().andClazzNameEqualTo(clazzName);
+
+        List<Integer> times = new ArrayList<>();
+
+        reportTimeDao.selectByExample(reportTimeExample).forEach(reportTime -> times.add(reportTime.getTime()));
+
+        return ResultBean.ok("查询成功！", times);
     }
 }

@@ -64,7 +64,15 @@ const routes = [
                 meta: {
                     title: "通知测试"
                 },
-                component: () => import( /* webpackChunkName: "data-insert" */ "../views/test/test.vue")
+                component: () => import( /* webpackChunkName: "data-insert" */ "../views/report/test.vue")
+            },
+            {
+                path: "/report/manager",
+                name: "report-manager",
+                meta: {
+                    title: "通知管理"
+                },
+                component: () => import( /* webpackChunkName: "data-insert" */ "../views/report/manager.vue")
             },
         ]
     }, {

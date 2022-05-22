@@ -82,8 +82,12 @@ export default {
       {
         icon: "el-icon-link",
         index: "3",
-        title: "测试",
+        title: "通知管理",
         subs: [
+          {
+            index: "/report/manager",
+            title: "通知管理",
+          },
           {
             index: "/report/test",
             title: "通知测试",

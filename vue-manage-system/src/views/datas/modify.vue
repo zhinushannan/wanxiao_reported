@@ -17,32 +17,33 @@
           <el-table
               :data="clazzData['data']"
               style="width: 100%">
-            <el-table-column fixed prop="clazzName" align="center" label="班级" />
-            <el-table-column prop="teacherName" align="center" label="导员姓名">
+            <el-table-column fixed prop="clazzName" align="center" label="班级" width="75"/>
+            <el-table-column prop="teacherName" align="center" label="导员姓名" width="100">
               <template #default="scope">
                 <span v-if="scope.row['teacherName']">{{ scope.row["teacherName"] }}</span>
                 <el-tag v-if="!scope.row['teacherName']" type="danger">未指定</el-tag>
               </template>
             </el-table-column>
-            <el-table-column prop="deptId" align="center" label="班级ID" />
-            <el-table-column prop="groupId" align="center" label="班级群号" />
-            <el-table-column prop="botId" align="center" label="机器人" />
-            <el-table-column prop="delete" align="center" label="撤回服务" :formatter="deleteFormat" >
+            <el-table-column prop="deptId" align="center" label="班级ID" width="70"/>
+            <el-table-column prop="groupId" align="center" label="班级群号" width="100"/>
+            <el-table-column prop="botId" align="center" label="机器人" width="70"/>
+            <el-table-column prop="delete" align="center" label="撤回服务" :formatter="deleteFormat" width="80">
               <template #default="scope">
                 <el-tag v-if="scope.row.delete===1">已开通</el-tag>
                 <el-tag v-if="scope.row.delete===0" type="info">未开通</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" width="160">
+            <el-table-column label="操作" align="center" width="300">
               <template #default="scope" style="height: 400px">
                 <el-button size="mini" type="primary" @click="student(scope.row)">学生</el-button>
+                <el-button size="mini" type="primary" @click="reportList(scope.row)">提醒时间</el-button>
                 <el-button size="mini" type="info" @click="editClazz(scope.row)">编辑</el-button>
               </template>
             </el-table-column>
           </el-table>
         </el-col>
 
-        <el-col :xs="6" :sm="8" :md="8" :lg="8" :xl="8">
+        <el-col :xs="6" :sm="8" :md="8" :lg="8" :xl="8" v-if="stuTableShow">
           <h4>{{ currentClazz }}学生信息</h4>
           <el-table
               :data="stuData"
@@ -70,6 +71,41 @@
             </el-table-column>
           </el-table>
         </el-col>
+
+        <el-col :xs="6" :sm="8" :md="8" :lg="8" :xl="8" v-if="timeTableShow">
+          <h4>{{ currentClazz }}提醒时间</h4>
+          <el-table
+              :data="times"
+              height="500"
+              style="width: 100%">
+
+            <el-table-column label="时间点" align="center">
+              <template #default="scope">
+                <span>
+                  <span>{{ parseInt((scope.row.time - 1) / 2) }}:</span>
+                  <span v-if="(scope.row.time - 1) % 2 === 0">00</span>
+                  <span v-if="(scope.row.time - 1) % 2 === 1">30</span>
+                </span>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="是否开启" align="center">
+              <template #default="scope">
+                <el-tooltip :content="'是否开启此时段的通知: ' + scope.row.isOpen" placement="top">
+                  <el-switch
+                      v-model="scope.row.isOpen"
+                      active-color="#13ce66"
+                      inactive-color="#ff4949"
+                      active-value="已开启"
+                      inactive-value="未开启"
+                  />
+                </el-tooltip>
+              </template>
+            </el-table-column>
+
+          </el-table>
+        </el-col>
+
 
       </el-row>
     </div>
@@ -169,12 +205,17 @@ export default {
       bots: [],
       accounts: [],
 
+      stuTableShow: false,
+      timeTableShow: false,
+
       clazzData: {
         page: 1,
         size: 10
       },
       currentClazz: "",
       stuData: [],
+
+      times: [],
 
       clazzVisible: false,
       clazzInfo: {},
@@ -191,14 +232,28 @@ export default {
     deleteFormat(row, column, cellValue, index) {
       return cellValue === 1 ? "已开通" : "未开通"
     },
+    reportList(row) {
+      let _this = this
+      _this.$axios.get("/data/report/list?class=" + row["clazzName"]).then((resp) => {
+        let time = resp["data"]["data"]
+        _this.times = []
+        for (let i = 17; i <= 37; i++) {
+          _this.times.push({time: i, isOpen: time.indexOf(i) !== -1})
+        }
+
+        console.log(_this.times)
+
+        _this.stuTableShow = false
+        _this.timeTableShow = true
+      })
+    },
     student(row) {
       let _this = this
       _this.$axios.get("/data/student/list?class=" + row["clazzName"]).then((resp) => {
         _this.currentClazz = row["clazzName"]
         _this.stuData = resp["data"]["data"]
-
-        console.log(_this.stuData)
-
+        _this.timeTableShow = false
+        _this.stuTableShow = true
       })
     },
     editClazz(row) {

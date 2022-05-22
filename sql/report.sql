@@ -70,7 +70,7 @@ CREATE TABLE `bot` (
 
 LOCK TABLES `bot` WRITE;
 /*!40000 ALTER TABLE `bot` DISABLE KEYS */;
-INSERT INTO `bot` VALUES ('2793287265',5701,1);
+INSERT INTO `bot` VALUES ('2793287265',5701,0);
 /*!40000 ALTER TABLE `bot` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,7 +128,7 @@ CREATE TABLE `clazz` (
 
 LOCK TABLES `clazz` WRITE;
 /*!40000 ALTER TABLE `clazz` DISABLE KEYS */;
-INSERT INTO `clazz` VALUES ('18数据',NULL,'2022.4.10','147331','825909952','5701',1),('19数据',NULL,'2022.5.10','1234','1234','5700',1),('19软件2',NULL,'2022.4.10','147372','1087894326','5700',0),('20数据',NULL,'2022.4.10','236630','945219184','5700',1),('20软件2','赵思文','2022.4.10','236628','953152455','5700',0);
+INSERT INTO `clazz` VALUES ('18数据','赵思文','2022.4.10','147331','825909952','5701',1),('19数据','赵思文','2022.5.10','1234','1234','5700',1),('19软件2','赵思文','2022.4.10','147372','1087894326','5700',0),('20数据','赵思文','2022.4.10','236630','945219184','5700',1),('20软件2','赵思文','2022.4.10','236628','953152455','5700',0);
 /*!40000 ALTER TABLE `clazz` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,6 +215,28 @@ LOCK TABLES `message` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `report_time`
+--
+
+DROP TABLE IF EXISTS `report_time`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `report_time` (
+  `clazz_name` varchar(255) NOT NULL,
+  `time` int NOT NULL COMMENT '提醒时间，从00:00开始为1，每半小时+1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `report_time`
+--
+
+LOCK TABLES `report_time` WRITE;
+/*!40000 ALTER TABLE `report_time` DISABLE KEYS */;
+/*!40000 ALTER TABLE `report_time` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `student`
 --
 
@@ -250,4 +272,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-17  1:10:35
+-- Dump completed on 2022-05-22  2:06:33
