@@ -3,7 +3,6 @@ package club.kwcoder.report.task.schedule;
 import club.kwcoder.report.dataobject.BotExample;
 import club.kwcoder.report.mapper.BotDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 

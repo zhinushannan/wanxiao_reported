@@ -7,7 +7,7 @@
         <result column="date" jdbcType="VARCHAR" property="date"/>
         <result column="dept_id" jdbcType="VARCHAR" property="deptId"/>
         <result column="group_id" jdbcType="VARCHAR" property="groupId"/>
-        <result column="bot_id" jdbcType="VARCHAR" property="botId"/>
+        <result column="bot_port" jdbcType="VARCHAR" property="botPort"/>
         <result column="delete" jdbcType="INTEGER" property="delete"/>
     </resultMap>
     <sql id="Example_Where_Clause">

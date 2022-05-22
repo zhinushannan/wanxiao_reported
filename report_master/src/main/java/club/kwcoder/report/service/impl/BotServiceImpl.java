@@ -3,7 +3,6 @@ package club.kwcoder.report.service.impl;
 import club.kwcoder.report.dataobject.*;
 import club.kwcoder.report.mapper.BotDao;
 import club.kwcoder.report.mapper.ClazzDao;
-import club.kwcoder.report.mapper.GroupListDao;
 import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.model.dto.BotDTO;
@@ -39,9 +38,6 @@ public class BotServiceImpl implements BotService {
 
     @Autowired
     private ClazzDao clazzDao;
-
-    @Autowired
-    private GroupListDao groupListDao;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -274,21 +270,21 @@ public class BotServiceImpl implements BotService {
 
         List<GroupDTO> groupLists = new ArrayList<>();
 
-        clazzDao.selectByExample(clazzExample).forEach(clazz -> {
-            GroupList groupList = groupListDao.selectByPrimaryKey(new GroupListKey(botId, clazz.getGroupId()));
-            if (groupList == null) {
-                groupLists.add(new GroupDTO().setGroupId(clazz.getGroupId())
-                        .setClazzName(clazz.getClazzName())
-                        .setIsMember(groupIds.contains(clazz.getGroupId())));
-            } else {
-                groupLists.add(new GroupDTO().setGroupId(groupList.getGroupId())
-                        .setClazzName(clazz.getClazzName())
-                        .setMark(groupList.getMark())
-                        .setIsMember(groupIds.contains(groupList.getGroupId())));
-            }
-        });
 
-
+        // TODO 检查是否在群的方式
+//        clazzDao.selectByExample(clazzExample).forEach(clazz -> {
+//            GroupList groupList = groupListDao.selectByPrimaryKey(new GroupListKey(botId, clazz.getGroupId()));
+//            if (groupList == null) {
+//                groupLists.add(new GroupDTO().setGroupId(clazz.getGroupId())
+//                        .setClazzName(clazz.getClazzName())
+//                        .setIsMember(groupIds.contains(clazz.getGroupId())));
+//            } else {
+//                groupLists.add(new GroupDTO().setGroupId(groupList.getGroupId())
+//                        .setClazzName(clazz.getClazzName())
+//                        .setMark(groupList.getMark())
+//                        .setIsMember(groupIds.contains(groupList.getGroupId())));
+//            }
+//        });
 
         return ResultBean.ok("查询成功！", groupLists);
     }

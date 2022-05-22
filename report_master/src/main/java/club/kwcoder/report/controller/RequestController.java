@@ -3,7 +3,6 @@ package club.kwcoder.report.controller;
 import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.dataobject.BotRequest;
-import club.kwcoder.report.model.dto.FriendRequestDTO;
 import club.kwcoder.report.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
