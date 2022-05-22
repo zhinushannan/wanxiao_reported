@@ -17,8 +17,7 @@
     "vue-i18n": "^9.0.0",
     "vue-router": "^4.0.10",
     "vue-schart": "^2.0.0",
-    "vuex": "^4.0.2",
-    "wangeditor": "^4.7.4"
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "vite": "2.3.7",
