@@ -79,6 +79,12 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
+    public ResultBean<List<Bot>> list() {
+        List<Bot> bots = botDao.selectByExample(new BotExample());
+        return ResultBean.ok("Bots查询成功！", bots);
+    }
+
+    @Override
     public ResultBean<List<LogDTO>> logs(String port, String sessionId) {
         String lastTime;
 

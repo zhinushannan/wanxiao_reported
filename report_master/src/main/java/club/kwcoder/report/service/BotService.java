@@ -1,5 +1,6 @@
 package club.kwcoder.report.service;
 
+import club.kwcoder.report.dataobject.Bot;
 import club.kwcoder.report.dataobject.GroupList;
 import club.kwcoder.report.model.bean.PageBean;
 import club.kwcoder.report.model.bean.ResultBean;
@@ -12,6 +13,8 @@ import java.util.List;
 
 public interface BotService {
     ResultBean<PageBean<BotDTO>> list(PageBean<BotDTO> pageBean);
+
+    ResultBean<List<Bot>> list();
 
     ResultBean<List<LogDTO>> logs(String port, String sessionId);
 

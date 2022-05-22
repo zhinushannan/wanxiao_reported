@@ -46,6 +46,13 @@ public class DataManagerController {
         return dataManagerService.reportList(clazzName);
     }
 
+    @RequestMapping(value = "report/modify", method = RequestMethod.GET)
+    public ResultBean<String> reportModify(@RequestParam("class") String clazzName,
+                                           @RequestParam("time") Integer time,
+                                           @RequestParam("isOpen") boolean isOpen) {
+        return dataManagerService.reportModify(clazzName, time, isOpen);
+    }
+
     @RequestMapping(value = "student/list", method = RequestMethod.GET)
     public ResultBean<List<Student>> studentList(@RequestParam(name = "class") String studentClazz) {
         return dataManagerService.studentList(studentClazz);

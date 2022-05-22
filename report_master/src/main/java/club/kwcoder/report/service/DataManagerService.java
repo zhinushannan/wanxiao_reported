@@ -9,6 +9,7 @@ import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.model.dto.DataInsertDTO;
 import club.kwcoder.report.model.dto.TeacherDTO;
 
+import java.net.InetAddress;
 import java.util.List;
 
 public interface DataManagerService {
@@ -31,4 +32,6 @@ public interface DataManagerService {
     ResultBean<String> accountDelete(String teacherName);
 
     ResultBean<List<Integer>> reportList(String clazzName);
+
+    ResultBean<String> reportModify(String clazzName, Integer time, boolean isOpen);
 }

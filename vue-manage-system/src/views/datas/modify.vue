@@ -98,6 +98,7 @@
                       inactive-color="#ff4949"
                       active-value="已开启"
                       inactive-value="未开启"
+                      @change="changeValue(scope.row.isOpen, scope.row.time)"
                   />
                 </el-tooltip>
               </template>
@@ -235,6 +236,8 @@ export default {
     reportList(row) {
       let _this = this
       _this.$axios.get("/data/report/list?class=" + row["clazzName"]).then((resp) => {
+        _this.currentClazz = row["clazzName"]
+
         let time = resp["data"]["data"]
         _this.times = []
         for (let i = 17; i <= 37; i++) {
@@ -246,6 +249,15 @@ export default {
         _this.stuTableShow = false
         _this.timeTableShow = true
       })
+    },
+    changeValue(open, val) {
+      let _this = this
+
+      let clazz = _this.currentClazz
+      let time = val
+      let isOpen = open === "已开启"
+
+      _this.$axios.get("/data/report/modify?class=" + clazz + "&time=" + time + "&isOpen=" + isOpen)
     },
     student(row) {
       let _this = this

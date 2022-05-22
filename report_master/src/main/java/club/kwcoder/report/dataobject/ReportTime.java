@@ -1,13 +1,18 @@
 package club.kwcoder.report.dataobject;
 
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * report_time
  * @author 
  */
 @Data
+@Accessors(chain = true)
 public class ReportTime implements Serializable {
     private String clazzName;
 

@@ -199,4 +199,22 @@ public class DataManagerServiceImpl implements DataManagerService {
 
         return ResultBean.ok("查询成功！", times);
     }
+
+    @Override
+    public ResultBean<String> reportModify(String clazzName, Integer time, boolean isOpen) {
+        if (isOpen) {
+            // 插入
+            ReportTime reportTime = new ReportTime()
+                    .setClazzName(clazzName)
+                    .setTime(time);
+            reportTimeDao.insert(reportTime);
+        } else {
+            // 删除
+            ReportTimeExample reportTimeExample = new ReportTimeExample();
+            reportTimeExample.createCriteria().andClazzNameEqualTo(clazzName)
+                    .andTimeEqualTo(time);
+            reportTimeDao.deleteByExample(reportTimeExample);
+        }
+        return ResultBean.ok("操作成功！", "操作成功！");
+    }
 }

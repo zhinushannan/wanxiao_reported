@@ -26,6 +26,11 @@ public class BotController {
         return botService.list(pageBean);
     }
 
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    public ResultBean<List<Bot>> list() {
+        return botService.list();
+    }
+
     @RequestMapping(value = "add/port", method = RequestMethod.GET)
     public ResultBean<Integer> getAvailablePort(@RequestParam(name = "port", required = false) Integer port) {
         return botService.getAvailablePort(port);
