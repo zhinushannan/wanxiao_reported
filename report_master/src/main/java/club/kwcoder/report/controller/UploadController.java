@@ -2,6 +2,7 @@ package club.kwcoder.report.controller;
 
 import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.utils.StreamCloseUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,9 @@ import java.io.*;
 @RestController
 public class UploadController {
 
+    @Value("${path.target.excel}")
+    private String excelTargetPath;
+
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ResultBean<Boolean> upload(MultipartFile file) {
         InputStream inputStream = null;
@@ -19,7 +23,7 @@ public class UploadController {
         try {
             assert file != null;
             inputStream = file.getInputStream();
-            outputStream = new FileOutputStream("/home/zhinushannan/Desktop/data-insert.csv");
+            outputStream = new FileOutputStream(excelTargetPath);
             byte[] buffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = inputStream.read(buffer)) != -1) {

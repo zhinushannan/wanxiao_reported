@@ -24,5 +24,15 @@
       "name": "path.engine.clazz",
       "type": "java.lang.String",
       "description": "按照班级通知引擎的脚本路径."
+    },
+    {
+      "name": "cors.allowedOrigin",
+      "type": "java.lang.String",
+      "description": "跨域目的地址."
+    },
+    {
+      "name": "path.target.excel",
+      "type": "java.lang.String",
+      "description": "上传的excel临时路径."
     }
   ] }
