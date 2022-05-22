@@ -13,16 +13,15 @@ import club.kwcoder.report.model.bean.ResultBean;
 import club.kwcoder.report.model.dto.DataInsertDTO;
 import club.kwcoder.report.model.dto.TeacherDTO;
 import club.kwcoder.report.service.DataManagerService;
-import cn.afterturn.easypoi.csv.CsvImportUtil;
-import cn.afterturn.easypoi.csv.entity.CsvImportParams;
+import com.csvreader.CsvReader;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +29,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class DataManagerServiceImpl implements DataManagerService {
+
+    @Value("${path.target.excel}")
+    private String excelTargetPath;
 
     @Autowired
     private ClazzDao clazzDao;
@@ -62,14 +64,25 @@ public class DataManagerServiceImpl implements DataManagerService {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
         Clazz clazz = new Clazz(dataInsert.getClazzName(), dataInsert.getTeacherName(), String.format("%s.%s.%s", tomorrow.getYear(), tomorrow.getMonthValue(), tomorrow.getDayOfMonth()), dataInsert.getDeptId(), dataInsert.getGroupId(), dataInsert.getBotPort(), dataInsert.getDelete());
 
-        CsvImportParams importParams = new CsvImportParams();
-        importParams.setTitleRows(0);
-        List<Student> students;
+        List<Student> students = new ArrayList<>();
         try {
-            students = CsvImportUtil.importCsv(new FileInputStream("/home/zhinushannan/Desktop/data-insert.csv"), Student.class, importParams);
-            System.out.println(students);
-            students.forEach(s -> s.setStudentClazz(dataInsert.getClazzName()));
-        } catch (FileNotFoundException e) {
+            CsvReader reader = new CsvReader(excelTargetPath, ',', StandardCharsets.UTF_8);
+            boolean isHead = true;
+            while (reader.readRecord()) {
+                if (isHead) {
+                    isHead = false;
+                    continue;
+                }
+                String[] values = reader.getValues();
+                students.add(
+                        new Student()
+                                .setStudentId(values[0])
+                                .setStudentName(values[1])
+                                .setStudentQq(values[2])
+                                .setStudentClazz(clazz.getClazzName())
+                );
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             return ResultBean.error("系统异常，请稍后重试！", null);
         }

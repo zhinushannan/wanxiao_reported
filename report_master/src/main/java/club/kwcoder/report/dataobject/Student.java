@@ -2,22 +2,20 @@ package club.kwcoder.report.dataobject;
 
 import java.io.Serializable;
 
-import cn.afterturn.easypoi.excel.annotation.Excel;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * student
  * @author 
  */
 @Data
+@Accessors(chain = true)
 public class Student implements Serializable {
-    @Excel(name = "studentId")
     private String studentId;
 
-    @Excel(name = "studentQq")
     private String studentQq;
 
-    @Excel(name = "studentName")
     private String studentName;
 
     private String studentClazz;
