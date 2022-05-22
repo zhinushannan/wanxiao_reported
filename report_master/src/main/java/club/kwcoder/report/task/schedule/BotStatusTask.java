@@ -28,7 +28,7 @@ public class BotStatusTask {
     @Autowired
     private BotDao botDao;
 
-    @Scheduled(fixedRate = 10000)
+//    @Scheduled(fixedRate = 10000)
     public void botStatus() {
         BotExample botExample = new BotExample();
         botDao.selectByExample(botExample).forEach(bot -> {

@@ -14,10 +14,4 @@ public interface RequestService {
      */
     ResultBean<PageBean<BotRequest>> list(PageBean<BotRequest> pageBean);
 
-    /**
-     * 处理加好友请求
-     * @param friendRequest 好友请求的相关信息
-     * @return 返回请求处理信息
-     */
-    ResultBean<String> friendRequest(FriendRequestDTO friendRequest);
 }

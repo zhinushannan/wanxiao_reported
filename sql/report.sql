@@ -133,33 +133,6 @@ INSERT INTO `clazz` VALUES ('18数据','赵思文','2022.4.10','147331','8259099
 UNLOCK TABLES;
 
 --
--- Table structure for table `friend_list`
---
-
-DROP TABLE IF EXISTS `friend_list`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `friend_list` (
-  `bot_id` varchar(255) NOT NULL,
-  `user_id` varchar(255) NOT NULL,
-  `nickname` varchar(255) NOT NULL,
-  `remark` varchar(255) NOT NULL,
-  `mark` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`bot_id`,`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `friend_list`
---
-
-LOCK TABLES `friend_list` WRITE;
-/*!40000 ALTER TABLE `friend_list` DISABLE KEYS */;
-INSERT INTO `friend_list` VALUES ('2793287265','1377875184','1377875184','治怒善男',NULL),('2793287265','1427774041','1427774041','ice_water',NULL),('2793287265','2793287265','2793287265','治怒善男',NULL),('2793287265','66600000','66600000','babyQ',NULL);
-/*!40000 ALTER TABLE `friend_list` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `group_list`
 --
 
@@ -233,6 +206,7 @@ CREATE TABLE `report_time` (
 
 LOCK TABLES `report_time` WRITE;
 /*!40000 ALTER TABLE `report_time` DISABLE KEYS */;
+INSERT INTO `report_time` VALUES ('19数据',31),('19数据',32),('19数据',33),('19数据',34),('20数据',32),('20软件2',32);
 /*!40000 ALTER TABLE `report_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -272,4 +246,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-22  2:06:33
+-- Dump completed on 2022-05-22  9:30:51

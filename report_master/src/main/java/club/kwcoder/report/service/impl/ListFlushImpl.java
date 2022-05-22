@@ -1,12 +1,8 @@
 package club.kwcoder.report.service.impl;
 
-import club.kwcoder.report.dataobject.FriendList;
-import club.kwcoder.report.dataobject.FriendListExample;
 import club.kwcoder.report.dataobject.GroupList;
 import club.kwcoder.report.dataobject.GroupListExample;
-import club.kwcoder.report.mapper.FriendListDao;
 import club.kwcoder.report.mapper.GroupListDao;
-import club.kwcoder.report.mapper.batch.FriendListBatchDao;
 import club.kwcoder.report.mapper.batch.GroupListBatchDao;
 import club.kwcoder.report.model.task.FriendModel;
 import club.kwcoder.report.model.task.GroupModel;
@@ -37,72 +33,10 @@ public class ListFlushImpl implements ListFlush {
     private RedisUtil redisUtil;
 
     @Autowired
-    private FriendListBatchDao friendListBatchDao;
-
-    @Autowired
-    private FriendListDao friendListDao;
-
-    @Autowired
     private GroupListBatchDao groupListBatchDao;
 
     @Autowired
     private GroupListDao groupListDao;
-
-    @Override
-    public void friendFlushList(String botId, int port) {
-        String url = "http://localhost:" + port + "/get_friend_list";
-        ResponseEntity<FriendModel> friendList = restTemplate.getForEntity(url, FriendModel.class);
-        if (friendList.getBody() != null) {
-            FriendModel body = friendList.getBody();
-
-            Map<String, FriendModel.Friend> friendMap = body.getData().stream().collect(Collectors.toMap(FriendModel.Friend::getUser_id, friend -> friend));
-
-            String baseKey = botId + ":friend:";
-            List<FriendList> addLists = new ArrayList<>();
-            List<String> delLists = new ArrayList<>();
-
-            redisUtil.getAllKeys(baseKey).forEach(s -> {
-                String friendId = s.split(":")[2];
-
-                FriendModel.Friend friend = friendMap.get(friendId);
-                if (friend == null) {
-                    redisUtil.del(s);
-                    delLists.add(friendId);
-                } else {
-                    if (!StringUtils.equals(redisUtil.getString(s), friend.toString())) {
-                        addLists.add(friendTransfer(botId, friend));
-                    }
-                }
-                friendMap.remove(friendId);
-            });
-
-            if (friendMap.size() != 0) {
-                friendMap.forEach((s, friend) -> {
-                    addLists.add(friendTransfer(botId, friend));
-                    redisUtil.setString(baseKey + friend.getUser_id(), friend.toString());
-                });
-            }
-
-            if (addLists.size() != 0) {
-                friendListBatchDao.insertAndUpdateBatch(addLists);
-            }
-
-            if (delLists.size() != 0) {
-                FriendListExample example = new FriendListExample();
-                example.or().andBotIdEqualTo(botId).andUserIdIn(delLists);
-                friendListDao.deleteByExample(example);
-            }
-        }
-    }
-
-    private FriendList friendTransfer(String botId, FriendModel.Friend friend) {
-        return new FriendList()
-                .setBotId(botId)
-                .setNickname(friend.getNickname())
-                .setNickname(friend.getUser_id())
-                .setUserId(friend.getUser_id())
-                .setRemark(friend.getRemark());
-    }
 
     @Override
     public void groupFlushList(String botId, int port) {

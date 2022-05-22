@@ -91,16 +91,12 @@
 
             <el-table-column label="是否开启" align="center">
               <template #default="scope">
-                <el-tooltip :content="'是否开启此时段的通知: ' + scope.row.isOpen" placement="top">
-                  <el-switch
-                      v-model="scope.row.isOpen"
-                      active-color="#13ce66"
-                      inactive-color="#ff4949"
-                      active-value="已开启"
-                      inactive-value="未开启"
-                      @change="changeValue(scope.row.isOpen, scope.row.time)"
-                  />
-                </el-tooltip>
+                <el-switch
+                    v-model="scope.row.isOpen"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    @change="changeValue(scope.row.isOpen, scope.row.time)"
+                />
               </template>
             </el-table-column>
 
@@ -239,25 +235,17 @@ export default {
         _this.currentClazz = row["clazzName"]
 
         let time = resp["data"]["data"]
+
         _this.times = []
         for (let i = 17; i <= 37; i++) {
           _this.times.push({time: i, isOpen: time.indexOf(i) !== -1})
         }
-
-        console.log(_this.times)
-
         _this.stuTableShow = false
         _this.timeTableShow = true
       })
     },
     changeValue(open, val) {
-      let _this = this
-
-      let clazz = _this.currentClazz
-      let time = val
-      let isOpen = open === "已开启"
-
-      _this.$axios.get("/data/report/modify?class=" + clazz + "&time=" + time + "&isOpen=" + isOpen)
+      this.$axios.get("/data/report/modify?class=" + this.currentClazz + "&time=" + val + "&isOpen=" + open)
     },
     student(row) {
       let _this = this

@@ -45,29 +45,4 @@ public class RequestServiceImpl implements RequestService {
         return ResultBean.ok("查询成功！", pageBean);
     }
 
-    @Override
-    public ResultBean<String> friendRequest(FriendRequestDTO friendRequest) {
-        Bot bot = botDao.selectByPrimaryKey(friendRequest.getBotId());
-
-        String url = "http://localhost:" + bot.getPort() + "/set_friend_add_request?flag=" + friendRequest.getFlag() + "&approve=" + friendRequest.getApprove() + "&remark=" + friendRequest.getMark();
-
-        ResponseEntity<Object> forEntity = restTemplate.getForEntity(url, Object.class);
-
-        if (forEntity.hasBody()) {
-            BotRequestExample example = new BotRequestExample();
-            example.or().andFlagEqualTo(friendRequest.getFlag());
-            List<BotRequest> botRequests = botRequestDao.selectByExample(example);
-
-            example.clear();
-            example.or().andBotIdEqualTo(bot.getBotId()).andTargetIdEqualTo(botRequests.get(0).getTargetId());
-            botRequestDao.deleteByExample(example);
-        }
-
-        if (friendRequest.getApprove()) {
-            listFlush.friendFlushList(bot.getBotId(), bot.getPort());
-            return ResultBean.ok("已同意添加该好友！", "已同意添加该好友！");
-        }
-
-        return ResultBean.ok("已拒绝添加该好友！", "已拒绝添加该好友！");
-    }
 }
