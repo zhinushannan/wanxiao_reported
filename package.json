@@ -1,0 +1,27 @@
+{
+  "name": "wanxiao_reported",
+  "version": "1.0.0",
+  "description": "轻量化健康打卡自动提醒机器人的文档(wanxiao_reported)",
+  "main": "index.js",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhinushannan/wanxiao_reported.git"
+  },
+  "keywords": [
+    "轻量化健康打卡自动提醒机器人"
+  ],
+  "author": "zhinushannan",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/zhinushannan/wanxiao_reported/issues"
+  },
+  "homepage": "https://github.com/zhinushannan/wanxiao_reported#readme",
+  "dependencies": {
+    "vuepress": "^1.9.7"
+  }
+}
