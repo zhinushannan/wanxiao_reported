@@ -85,10 +85,6 @@ export default {
         title: "通知管理",
         subs: [
           {
-            index: "/report/manager",
-            title: "通知管理",
-          },
-          {
             index: "/report/test",
             title: "通知测试",
           },

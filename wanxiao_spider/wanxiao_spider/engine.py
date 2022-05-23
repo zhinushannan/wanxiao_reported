@@ -1,5 +1,4 @@
 import datetime
-import redis
 
 from handle_log import HandleLog
 
@@ -8,7 +7,7 @@ from auto_reported import AutoReport
 log = HandleLog()
 
 
-def get_unfinished_clazz(cursor):
+def get_unfinished_clazz(cursor, classes):
     """
     get unfinished reported class
     :return: list of (class_name, teacher_name, dept_id, qq_group_id)
@@ -18,7 +17,7 @@ def get_unfinished_clazz(cursor):
     tomorrow = now + datetime.timedelta(days=1)
     date = f'{tomorrow.year}.{tomorrow.month}.{tomorrow.day + 1}'
     # select clazz which report date not equal tomorrow str
-    unfinished_clazz_sql = f'select clazz_name, teacher_name, dept_id, group_id, bot_port, `delete` from clazz where `date`<>"{date}" and teacher_name is not null '
+    unfinished_clazz_sql = f'select clazz_name, teacher_name, dept_id, group_id, bot_port, `delete` from clazz where `date`<>"{date}" and teacher_name is not null and clazz_name in {classes}'
     cursor.execute(unfinished_clazz_sql)
     unfinished_clazz = list(cursor.fetchall())
     return unfinished_clazz
@@ -90,8 +89,8 @@ def get_clazz_info(cursor, unfinished_clazz):
     return clazz_info
 
 
-def run(cursor, connect_redis, channel):
-    unfinished_clazz = get_unfinished_clazz(cursor)
+def run(cursor, connect_redis, channel, classes):
+    unfinished_clazz = get_unfinished_clazz(cursor, classes)
     log.info(f"获取到未完成打卡的班级：{str(list(map(lambda x: x[0], unfinished_clazz)))}")
     clazz_info = get_clazz_info(cursor, unfinished_clazz)
 

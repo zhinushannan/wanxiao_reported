@@ -34,5 +34,25 @@
       "name": "path.target.excel",
       "type": "java.lang.String",
       "description": "上传的excel临时路径."
+    },
+    {
+      "name": "rabbitmq.queue",
+      "type": "java.lang.String",
+      "description": "消息队列的名称."
+    },
+    {
+      "name": "spider.url.base",
+      "type": "java.lang.String",
+      "description": "爬虫的根域名."
+    },
+    {
+      "name": "spider.url.get_unreported",
+      "type": "java.lang.String",
+      "description": "正常推送班级的url."
+    },
+    {
+      "name": "spider.url.appoint_clazz",
+      "type": "java.lang.String",
+      "description": "推送指定班级的url."
     }
   ] }

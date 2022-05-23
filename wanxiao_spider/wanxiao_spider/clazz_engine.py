@@ -45,10 +45,14 @@ def get_info(cursor, clazz_name):
     return teacher, account_info, clazz
 
 
-def run(cursor, connect_redis, channel, clazz_name, report_type, bot_id):
+def run(cursor, connect_redis, channel, clazz_name, report_type, bot_id, group_id=None):
     teacher, account_info, clazz = get_info(cursor, clazz_name)
     clazz[clazz_name]["bot_id"] = bot_id
     clazz[clazz_name]["delete"] = 0
+
+    if group_id is not None:
+        clazz[clazz_name]["group_id"] = group_id
+
     log.info(f"开始推送 [{teacher}]，{clazz}")
     msg = AutoReport(teacher, account_info, clazz, cursor, connect_redis, channel, report_type).run()
     return msg

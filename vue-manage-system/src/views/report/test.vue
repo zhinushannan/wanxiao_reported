@@ -30,6 +30,16 @@
             <el-option label="全员" value="1"/>
           </el-select>
         </el-form-item>
+        <el-form-item prop="botId">
+          <el-select v-model="testForm.botPort" placeholder="机器人（可选）">
+            <el-option
+                v-for="item in bots"
+                :key="item.port"
+                :label="item.port"
+                :value="item.port"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item prop="groupId">
           <el-input v-model="testForm.groupId" placeholder="测试群聊（可选）"/>
         </el-form-item>
@@ -60,9 +70,11 @@ export default {
   data() {
     return {
       testRules: [],
+      bots: [],
       testForm: {
         clazz: "",
         type: "",
+        botId: "",
         groupId: ""
       },
       msgShow: "",
@@ -73,14 +85,14 @@ export default {
   methods: {
     clazzList() {
       let _this = this
-      _this.$axios.get("/report/clazzList").then((resp) => {
+      _this.$axios.get("/test/clazzList").then((resp) => {
         _this.clazz = resp["data"]["data"]
       })
     },
     onSubmit() {
       let _this = this
 
-      _this.$axios.post("/report/do", _this.testForm).then((resp) => {
+      _this.$axios.post("/test/do", _this.testForm).then((resp) => {
         _this.msgShow = resp["data"]["data"]["show"]
         _this.msgRaw = resp["data"]["data"]["raw"]
       })
@@ -97,6 +109,11 @@ export default {
   created() {
     let _this = this
     _this.clazzList()
+
+    _this.$axios.get("/bot/list").then((resp) => {
+      _this.bots = resp["data"]["data"]
+    })
+
   }
 }
 </script>

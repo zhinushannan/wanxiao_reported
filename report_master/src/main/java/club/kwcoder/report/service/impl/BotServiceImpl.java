@@ -10,7 +10,6 @@ import club.kwcoder.report.service.BotService;
 import club.kwcoder.report.utils.BotUtil;
 import club.kwcoder.report.utils.RedisUtil;
 import club.kwcoder.report.utils.StreamCloseUtil;
-import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import freemarker.template.Configuration;
@@ -18,9 +17,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import sun.misc.BASE64Encoder;
 
 import java.io.*;
@@ -44,9 +41,6 @@ public class BotServiceImpl implements BotService {
 
     @Autowired
     private BotUtil botUtil;
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     @Override
     public ResultBean<PageBean<BotDTO>> list(PageBean<BotDTO> pageBean) {
@@ -220,7 +214,7 @@ public class BotServiceImpl implements BotService {
             // 执行
             this.restart(String.valueOf(bot.getServersHttpPort()));
         } catch (IOException | TemplateException ignored) {
-            // TODO 错误处理：删除相关的文件
+            return ResultBean.error("新增失败，请稍后重试！", null);
         } finally {
             if (out != null) {
                 try {
@@ -231,9 +225,10 @@ public class BotServiceImpl implements BotService {
             }
         }
 
-        // TODO 添加进数据库
-
-        // TODO 通过修改日志等级可以获取日志
+        botDao.insert(new Bot()
+                .setBotId(bot.getAccountUin())
+                .setPort(bot.getServersHttpPort())
+                .setStatus(0));
 
         return ResultBean.ok("添加成功，请不要离开界面，稍后会弹出登录二维码！", null);
     }
@@ -294,8 +289,6 @@ public class BotServiceImpl implements BotService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // TODO 启动失败的情况
-        // TODO 启动成功后刷新机器人状态
         return ResultBean.ok("启动成功！", null);
     }
 

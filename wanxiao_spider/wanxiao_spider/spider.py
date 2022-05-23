@@ -12,10 +12,12 @@ log = HandleLog()
 app = Flask(__name__)
 
 
-@app.route('/get_unreported')
+@app.route('/get_unreported', methods=["POST"])
 def get_unreported():
     connect_mysql, cursor, connect_redis, channel, connect_mq = utils.get_connect()
-    engine.run(cursor, connect_redis, channel)
+    class_list = request.get_json()
+    classes = str(class_list).replace("[", "(").replace("]", ")")
+    engine.run(cursor, connect_redis, channel, classes)
     utils.close_connect(connect_mysql, cursor, connect_redis, channel, connect_mq)
     return "no reply"
 
@@ -24,12 +26,10 @@ def get_unreported():
 def get_appoint_clazz():
     connect_mysql, cursor, connect_redis, channel, connect_mq = utils.get_connect()
 
-    clazz_name, report_type, bot_id = request.args.get("clazz_name"), request.args.get("report_type"), request.args.get(
-        "bot_id"),
+    clazz_name, report_type, bot_port, group_id = request.args.get("clazz_name"), request.args.get("report_type"), request.args.get(
+        "bot_port"), request.args.get("group_id")
 
-    print(clazz_name, report_type, bot_id)
-
-    msg = clazz_engine.run(cursor, connect_redis, channel, clazz_name, report_type, bot_id)
+    msg = clazz_engine.run(cursor, connect_redis, channel, clazz_name, report_type, bot_port, group_id)
 
     utils.close_connect(connect_mysql, cursor, connect_redis, channel, connect_mq)
 

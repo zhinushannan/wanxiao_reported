@@ -7,7 +7,7 @@ public class TestDTO {
 
     private String clazz;
     private Integer type;
-    private String botId;
+    private String botPort;
     private String groupId;
 
 }

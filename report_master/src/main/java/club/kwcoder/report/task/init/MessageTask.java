@@ -16,8 +16,8 @@ public class MessageTask implements CommandLineRunner {
     @Autowired
     private CustomConsumer consumer;
 
-    @Value("${rabbitmq.routingKey}")
-    private String routingKey;
+    @Value("${rabbitmq.queue}")
+    private String queue;
 
     /**
      * 从消息队列中获取消息并发送
@@ -28,7 +28,7 @@ public class MessageTask implements CommandLineRunner {
     public void run(String... args) {
         new Thread(() -> {
             try {
-                consumer.consumer(routingKey);
+                consumer.consumer(queue);
             } catch (IOException e) {
                 e.printStackTrace();
             }

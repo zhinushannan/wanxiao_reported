@@ -26,7 +26,7 @@
             </el-table-column>
             <el-table-column prop="deptId" align="center" label="班级ID" width="70"/>
             <el-table-column prop="groupId" align="center" label="班级群号" width="100"/>
-            <el-table-column prop="botId" align="center" label="机器人" width="70"/>
+            <el-table-column prop="botPort" align="center" label="机器人" width="70"/>
             <el-table-column prop="delete" align="center" label="撤回服务" :formatter="deleteFormat" width="80">
               <template #default="scope">
                 <el-tag v-if="scope.row.delete===1">已开通</el-tag>

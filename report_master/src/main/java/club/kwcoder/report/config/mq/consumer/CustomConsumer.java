@@ -3,10 +3,7 @@ package club.kwcoder.report.config.mq.consumer;
 import club.kwcoder.report.config.mq.RabbitmqConfig;
 import club.kwcoder.report.utils.RedisUtil;
 import com.alibaba.fastjson.JSON;
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.*;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.amqp.rabbit.connection.Connection;
@@ -36,8 +33,8 @@ public class CustomConsumer {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Value("${rabbitmq.routingKey}")
-    private String routingKey;
+    @Value("${rabbitmq.queue}")
+    private String queue;
 
     @Bean
     public Channel getChannel() {
@@ -47,7 +44,7 @@ public class CustomConsumer {
     public void consumer(String queue) throws IOException {
         Connection connection = rabbitmqConfig.getConnectionFactory().createConnection();
         Channel channel = connection.createChannel(true);
-        channel.queueDeclare(routingKey, true, false, false, null);
+        channel.queueDeclare(queue, true, false, false, null);
         channel.basicConsume(queue, true, new MyConsumer(channel));
     }
 
@@ -61,6 +58,10 @@ public class CustomConsumer {
         @Override
         public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) {
             Message message = JSON.parseObject(new String(body), Message.class);
+
+            if (StringUtils.isBlank(message.getGroupId()) || StringUtils.isBlank(message.getPort())) {
+                return;
+            }
 
             if (message.getDelete()) {
                 System.out.println("message_id:" + message.getGroupId());
@@ -89,7 +90,7 @@ public class CustomConsumer {
                     }
                 }
             } else {
-                rabbitTemplate.convertAndSend(routingKey, body);
+                rabbitTemplate.convertAndSend(queue, body);
             }
             try {
                 Thread.sleep(3000);

@@ -38,9 +38,10 @@ def get_connect():
         log.info("获取 Redis 数据库链接成功！")
 
     try:
-        connect_mq = pika.BlockingConnection(pika.ConnectionParameters(host="localhost", port=5672))
+        auth =pika.PlainCredentials("test", "test")
+        connect_mq = pika.BlockingConnection(pika.ConnectionParameters(host="localhost", port=5672, credentials=auth))
         channel = connect_mq.channel()
-        channel.queue_declare("wanxiao_report")
+        channel.queue_declare("wanxiao_report", durable=True)
     except:
         close_connect(connect_mysql, cursor, connect_redis, connect_mq, channel)
         log.error("消息队列链接失败！")

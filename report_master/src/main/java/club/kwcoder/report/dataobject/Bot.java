@@ -2,12 +2,14 @@ package club.kwcoder.report.dataobject;
 
 import java.io.Serializable;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * bot
  * @author 
  */
 @Data
+@Accessors(chain = true)
 public class Bot implements Serializable {
     private String botId;
 

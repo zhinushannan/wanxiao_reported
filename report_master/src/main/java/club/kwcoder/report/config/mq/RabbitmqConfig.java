@@ -28,6 +28,7 @@ public class RabbitmqConfig {
         cachingConnectionFactory.setPort(port);
         cachingConnectionFactory.setUsername(username);
         cachingConnectionFactory.setPassword(password);
+        cachingConnectionFactory.setVirtualHost("/");
         return cachingConnectionFactory;
     }
 

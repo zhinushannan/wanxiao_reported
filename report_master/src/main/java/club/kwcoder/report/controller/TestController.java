@@ -24,7 +24,7 @@ public class TestController {
         return testService.clazzList();
     }
 
-    @RequestMapping(value = "/do", method = RequestMethod.POST)
+    @RequestMapping(value = "do", method = RequestMethod.POST)
     public ResultBean<Map<String, String>> doTest(@RequestBody TestDTO test) {
         return testService.doTest(test);
     }

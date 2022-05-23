@@ -34,7 +34,7 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public ResultBean<Map<String, String>> doTest(TestDTO test) {
-        String url = String.format("http://127.0.0.1:5000/appoint_clazz?clazz_name=%s&report_type=%s&bot_id=%s", test.getClazz(), test.getType(), test.getBotId());
+        String url = String.format("http://127.0.0.1:5000/appoint_clazz?clazz_name=%s&report_type=%s&bot_port=%s&group_id=%s", test.getClazz(), test.getType(), test.getBotPort(), test.getGroupId());
         ResponseEntity<Map> forEntity = restTemplate.getForEntity(url, Map.class);
 
         Map<String, String> body;
