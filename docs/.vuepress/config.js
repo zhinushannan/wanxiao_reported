@@ -1,6 +1,7 @@
 module.exports = {
     title: '轻量化健康打卡自动提醒机器人',
     description: '疫情之下辅助班级每日健康打卡提醒的好帮手！',
+    base: '/wanxiao_reported/',
     themeConfig: {
         nav: [
             {text: 'Home', link: '/'},                      // 根路径
