@@ -37,6 +37,8 @@ public class TestServiceImpl implements TestService {
         String url = String.format("http://127.0.0.1:5000/appoint_clazz?clazz_name=%s&report_type=%s&bot_port=%s&group_id=%s", test.getClazz(), test.getType(), test.getBotPort(), test.getGroupId());
         ResponseEntity<Map> forEntity = restTemplate.getForEntity(url, Map.class);
 
+        System.out.println(forEntity);
+
         Map<String, String> body;
         if (forEntity.getBody() != null) {
             body = forEntity.getBody();

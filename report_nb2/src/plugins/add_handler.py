@@ -3,7 +3,11 @@ import requests
 from nonebot import on_request
 from nonebot.adapters.cqhttp import Bot, Event
 
-from report_nb2.src.plugins import _settings
+DB_HOST = "localhost"
+DB_PORT = 3306
+DB_USER = "root"
+DB_PASSWD = "09140727"
+DB_NAME = "report"
 
 friend_match = on_request()
 
@@ -14,8 +18,8 @@ def get_message(bot: Bot, event: Event):
     bot_id = str(bot.self_id)
 
     sql = "select port from bot where bot_id = " + bot_id
-    db = pymysql.connect(host=_settings.DB_HOST, port=_settings.DB_PORT, user=_settings.DB_USER,
-                         password=_settings.DB_PASSWD, database=_settings.DB_NAME)
+    db = pymysql.connect(host=DB_HOST, port=DB_PORT, user=DB_USER,
+                         password=DB_PASSWD, database=DB_NAME)
     cursor = db.cursor()
     cursor.execute(sql)
     port = cursor.fetchone()[0]

@@ -12,6 +12,7 @@
     "axios": "^0.21.4",
     "element-plus": "1.0.2-beta.52",
     "jquery": "^3.6.0",
+    "requset": "0.0.1-security",
     "vue": "^3.1.2",
     "vue-cropperjs": "^5.0.0",
     "vue-i18n": "^9.0.0",

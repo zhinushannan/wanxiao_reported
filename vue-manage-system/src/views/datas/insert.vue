@@ -30,8 +30,8 @@
           <el-form-item label="班级群号" prop="groupId">
             <el-input v-model="form.groupId"></el-input>
           </el-form-item>
-          <el-form-item label="机器人" prop="botId">
-            <el-select v-model="form.botId" placeholder="请选择机器人编号">
+          <el-form-item label="机器人" prop="botPort">
+            <el-select v-model="form.botPort" placeholder="请选择机器人编号">
               <el-option
                   v-for="item in bots"
                   :key="item.port"
@@ -86,7 +86,7 @@ export default {
         teacherName: "",
         deptId: "",
         groupId: "",
-        botId: "",
+        botPort: "",
         delete: "",
         isUpload: false
       },
@@ -104,7 +104,7 @@ export default {
         groupId: [
           {required: true, message: "请输入班级群号", trigger: "blur"},
         ],
-        botId: [
+        botPort: [
           {required: true, message: "请选择机器人", trigger: "blur"},
         ],
       }

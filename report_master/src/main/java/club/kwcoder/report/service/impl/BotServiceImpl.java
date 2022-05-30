@@ -155,8 +155,12 @@ public class BotServiceImpl implements BotService {
         if (port == null || !flag) {
             example.setOrderByClause("port desc");
             PageHelper.startPage(1, 1);
-            Bot bot = botDao.selectByExample(example).get(0);
-            port = bot.getPort() + 1;
+            List<Bot> bots = botDao.selectByExample(example);
+            if (bots.size() > 0) {
+                port = bots.get(0).getPort() + 1;
+            } else {
+                port = 5700;
+            }
         }
 
         return ResultBean.ok("查询成功！", port);
