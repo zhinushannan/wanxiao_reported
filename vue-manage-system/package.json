@@ -21,9 +21,9 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "vite": "2.3.7",
     "@vitejs/plugin-vue": "^1.2.3",
-    "@vue/compiler-sfc": "^3.1.2"
+    "@vue/compiler-sfc": "^3.1.2",
+    "vite": "2.3.7"
   },
   "browserslist": [
     "> 1%",

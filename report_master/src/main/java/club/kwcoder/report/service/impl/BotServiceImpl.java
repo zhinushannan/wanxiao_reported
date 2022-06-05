@@ -17,6 +17,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
@@ -42,6 +43,9 @@ public class BotServiceImpl implements BotService {
     @Autowired
     private BotUtil botUtil;
 
+    @Value("${os}")
+    private String os;
+
     @Override
     public ResultBean<PageBean<BotDTO>> list(PageBean<BotDTO> pageBean) {
         PageHelper.startPage(pageBean.getPage(), pageBean.getSize());
@@ -52,7 +56,7 @@ public class BotServiceImpl implements BotService {
 
         bots.forEach(bot -> {
             ClazzExample example = new ClazzExample();
-            example.createCriteria().andBotPortEqualTo(String.valueOf(bot.getPort()));
+            example.createCriteria().andBotPortEqualTo(bot.getPort());
 
             List<String> clazz = new ArrayList<>();
             clazzDao.selectByExample(example).forEach(c -> clazz.add(c.getClazzName()));
@@ -78,22 +82,19 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
-    public ResultBean<List<LogDTO>> logs(String port, String sessionId) {
-        String lastTime;
+    public ResultBean<List<String>> logs(String port, String sessionId) {
+        String lastLog;
 
+        // 当 sessionId 为空，即第一次请求
         if (StringUtils.isBlank(sessionId)) {
-            lastTime = null;
+            lastLog = null;
             sessionId = UUID.randomUUID().toString();
         } else {
-            lastTime = redisUtil.getString("log:" + sessionId + ":" + port);
-        }
-
-        if (StringUtils.isBlank(lastTime)) {
-            lastTime = "[" + LocalDateTime.now().minusMinutes(5).toString().replace("T", " ").split("\\.")[0] + "]";
+            lastLog = redisUtil.getString("log:" + sessionId + ":" + port);
         }
 
         String currentLogPath = botUtil.getCurrentLogPath(port);
-        List<LogDTO> logs = new ArrayList<>();
+        List<String> logs = new ArrayList<>();
         RandomAccessFile rf;
         try {
             rf = new RandomAccessFile(currentLogPath, "r");
@@ -108,19 +109,23 @@ public class BotServiceImpl implements BotService {
                 if (c == '\n' || c == '\r') {
                     String s = rf.readLine();
                     line = new String(s.getBytes(StandardCharsets.ISO_8859_1));
-                    LogDTO logDTO = this.parseToDto(line);
-                    // 前者大则为正，为正即当前获取的时间大于上次获取的时间，即此条日志上次没获取，因此这次需要获取
-                    if (logDTO.getTime().compareTo(lastTime) > 0) {
-                        logs.add(0, logDTO);
+                    // 如果两者不相等，则说明还没获取到上一条日志
+                    if (!StringUtils.equals(line, lastLog)) {
+                        logs.add(0, line);
+                    }
+                    // 如果两者相等，则说明已经获取到了指定的日志，需要停止
+                    else {
+                        break;
                     }
                 }
 
                 if (nextend == 0) {
                     rf.seek(0);
                     line = new String(rf.readLine().getBytes(StandardCharsets.ISO_8859_1));
-                    LogDTO logDTO = this.parseToDto(line);
-                    if (logDTO.getTime().compareTo(lastTime) > 0) {
-                        logs.add(0, logDTO);
+                    if (!StringUtils.equals(line, lastLog)) {
+                        logs.add(0, line);
+                    } else {
+                        break;
                     }
                 } else {
                     rf.seek(nextend - 1);//为下一次循环做准备
@@ -132,7 +137,7 @@ public class BotServiceImpl implements BotService {
         }
 
         if (logs.size() != 0) {
-            redisUtil.setString("log:" + sessionId + ":" + port, logs.get(logs.size() - 1).getTime());
+            redisUtil.setString("log:" + sessionId + ":" + port, logs.get(logs.size() - 1));
         }
 
         return ResultBean.ok(sessionId, logs);
@@ -172,7 +177,7 @@ public class BotServiceImpl implements BotService {
         String templatePath = botUtil.getTemplatePath();
         String botPath = botUtil.getBotPath(String.valueOf(bot.getServersHttpPort()));
 
-        File src = new File(templatePath + "/go-cqhttp");
+        File src = new File(templatePath + String.format("/go-cqhttp-%s", os));
         File tar = new File(botPath);
         if (!tar.exists()) {
             @SuppressWarnings("unused") boolean mkdirs = tar.mkdirs();
@@ -264,7 +269,7 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
-    public ResultBean<List<GroupDTO>> groupList(String botId, String port) {
+    public ResultBean<List<GroupDTO>> groupList(String botId, Integer port) {
         ClazzExample clazzExample = new ClazzExample();
         clazzExample.createCriteria().andBotPortEqualTo(port);
 
@@ -286,9 +291,9 @@ public class BotServiceImpl implements BotService {
     public ResultBean<String> restart(String port) {
         String botPath = botUtil.getBotPath(port);
         try {
-            String command = "chmod +x ./go-cqhttp";
+            String command = String.format("chmod +x ./go-cqhttp-%s", os);
             Runtime.getRuntime().exec(command, new String[]{}, new File(botPath));
-            command = "nohup ./go-cqhttp & ";
+            command = String.format("nohup ./go-cqhttp-%s & ", os);
             Runtime.getRuntime().exec(command, new String[]{}, new File(botPath));
         } catch (IOException e) {
             e.printStackTrace();

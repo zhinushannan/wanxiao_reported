@@ -7,7 +7,7 @@
     <result column="date" jdbcType="VARCHAR" property="date" />
     <result column="dept_id" jdbcType="VARCHAR" property="deptId" />
     <result column="group_id" jdbcType="VARCHAR" property="groupId" />
-    <result column="bot_port" jdbcType="VARCHAR" property="botPort" />
+    <result column="bot_port" jdbcType="INTEGER" property="botPort" />
     <result column="delete" jdbcType="INTEGER" property="delete" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -106,7 +106,7 @@
       dept_id, group_id, bot_port, 
       `delete`)
     values (#{clazzName,jdbcType=VARCHAR}, #{teacherName,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR}, 
-      #{deptId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{botPort,jdbcType=VARCHAR}, 
+      #{deptId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{botPort,jdbcType=INTEGER}, 
       #{delete,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="club.kwcoder.report.dataobject.Clazz">
@@ -151,7 +151,7 @@
         #{groupId,jdbcType=VARCHAR},
       </if>
       <if test="botPort != null">
-        #{botPort,jdbcType=VARCHAR},
+        #{botPort,jdbcType=INTEGER},
       </if>
       <if test="delete != null">
         #{delete,jdbcType=INTEGER},
@@ -183,7 +183,7 @@
         group_id = #{record.groupId,jdbcType=VARCHAR},
       </if>
       <if test="record.botPort != null">
-        bot_port = #{record.botPort,jdbcType=VARCHAR},
+        bot_port = #{record.botPort,jdbcType=INTEGER},
       </if>
       <if test="record.delete != null">
         `delete` = #{record.delete,jdbcType=INTEGER},
@@ -200,7 +200,7 @@
       `date` = #{record.date,jdbcType=VARCHAR},
       dept_id = #{record.deptId,jdbcType=VARCHAR},
       group_id = #{record.groupId,jdbcType=VARCHAR},
-      bot_port = #{record.botPort,jdbcType=VARCHAR},
+      bot_port = #{record.botPort,jdbcType=INTEGER},
       `delete` = #{record.delete,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -222,7 +222,7 @@
         group_id = #{groupId,jdbcType=VARCHAR},
       </if>
       <if test="botPort != null">
-        bot_port = #{botPort,jdbcType=VARCHAR},
+        bot_port = #{botPort,jdbcType=INTEGER},
       </if>
       <if test="delete != null">
         `delete` = #{delete,jdbcType=INTEGER},
@@ -236,7 +236,7 @@
       `date` = #{date,jdbcType=VARCHAR},
       dept_id = #{deptId,jdbcType=VARCHAR},
       group_id = #{groupId,jdbcType=VARCHAR},
-      bot_port = #{botPort,jdbcType=VARCHAR},
+      bot_port = #{botPort,jdbcType=INTEGER},
       `delete` = #{delete,jdbcType=INTEGER}
     where clazz_name = #{clazzName,jdbcType=VARCHAR}
   </update>

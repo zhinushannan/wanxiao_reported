@@ -53,7 +53,8 @@ public class ClazzExample {
     }
 
     protected Criteria createCriteriaInternal() {
-        return new Criteria();
+        Criteria criteria = new Criteria();
+        return criteria;
     }
 
     public void clear() {
@@ -463,62 +464,52 @@ public class ClazzExample {
             return (Criteria) this;
         }
 
-        public Criteria andBotPortEqualTo(String value) {
+        public Criteria andBotPortEqualTo(Integer value) {
             addCriterion("bot_port =", value, "botPort");
             return (Criteria) this;
         }
 
-        public Criteria andBotPortNotEqualTo(String value) {
+        public Criteria andBotPortNotEqualTo(Integer value) {
             addCriterion("bot_port <>", value, "botPort");
             return (Criteria) this;
         }
 
-        public Criteria andBotPortGreaterThan(String value) {
+        public Criteria andBotPortGreaterThan(Integer value) {
             addCriterion("bot_port >", value, "botPort");
             return (Criteria) this;
         }
 
-        public Criteria andBotPortGreaterThanOrEqualTo(String value) {
+        public Criteria andBotPortGreaterThanOrEqualTo(Integer value) {
             addCriterion("bot_port >=", value, "botPort");
             return (Criteria) this;
         }
 
-        public Criteria andBotPortLessThan(String value) {
+        public Criteria andBotPortLessThan(Integer value) {
             addCriterion("bot_port <", value, "botPort");
             return (Criteria) this;
         }
 
-        public Criteria andBotPortLessThanOrEqualTo(String value) {
+        public Criteria andBotPortLessThanOrEqualTo(Integer value) {
             addCriterion("bot_port <=", value, "botPort");
             return (Criteria) this;
         }
 
-        public Criteria andBotPortLike(String value) {
-            addCriterion("bot_port like", value, "botPort");
-            return (Criteria) this;
-        }
-
-        public Criteria andBotPortNotLike(String value) {
-            addCriterion("bot_port not like", value, "botPort");
-            return (Criteria) this;
-        }
-
-        public Criteria andBotPortIn(List<String> values) {
+        public Criteria andBotPortIn(List<Integer> values) {
             addCriterion("bot_port in", values, "botPort");
             return (Criteria) this;
         }
 
-        public Criteria andBotPortNotIn(List<String> values) {
+        public Criteria andBotPortNotIn(List<Integer> values) {
             addCriterion("bot_port not in", values, "botPort");
             return (Criteria) this;
         }
 
-        public Criteria andBotPortBetween(String value1, String value2) {
+        public Criteria andBotPortBetween(Integer value1, Integer value2) {
             addCriterion("bot_port between", value1, value2, "botPort");
             return (Criteria) this;
         }
 
-        public Criteria andBotPortNotBetween(String value1, String value2) {
+        public Criteria andBotPortNotBetween(Integer value1, Integer value2) {
             addCriterion("bot_port not between", value1, value2, "botPort");
             return (Criteria) this;
         }

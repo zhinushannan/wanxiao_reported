@@ -87,6 +87,8 @@ public class DataManagerServiceImpl implements DataManagerService {
             return ResultBean.error("系统异常，请稍后重试！", null);
         }
 
+        System.out.println(clazz);
+
         clazzDao.insert(clazz);
 
         studentBatchDao.insertAndUpdateBatch(students);

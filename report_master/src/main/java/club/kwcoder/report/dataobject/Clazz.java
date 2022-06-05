@@ -26,7 +26,7 @@ public class Clazz implements Serializable {
 
     private String groupId;
 
-    private String botPort;
+    private Integer botPort;
 
     /**
      * 开启撤回 1 

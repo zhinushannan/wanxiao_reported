@@ -81,29 +81,44 @@ export default {
         if (resp.data.flag) {
           ElMessage.success(resp.data.message)
 
-          let timer = window.setInterval(function () {
-            _this.logs()
-            // if (_this.qrcodeVisible) {
-            //   window.clearInterval(timer)
-            // }
-          }, 500);
+          _this.logs()
+          // let timer = window.setInterval(function () {
+          //   _this.logs()
+          //   // if (_this.qrcodeVisible) {
+          //   //   window.clearInterval(timer)
+          //   // }
+          // }, 500);
         }
       })
     },
-    logs() {
+    async logs() {
       let _this = this
-      _this.$axios.get("/bot/start/log?port=" + _this.bot.serversHttpPort + "&sessionId=" + _this.logSessionId).then((resp) => {
-        _this.logSessionId = resp["data"]["message"]
-        let logs = resp["data"]["data"]
-        if (logs.length !== 0) {
-          for (let i = 0;i < logs.length; i++) {
-            _this.logStr += logs[i]["time"] + logs[i]["level"] + logs[i]["content"] + "\n"
-            if (logs[i]["content"].indexOf("qrcode.png") !== -1) {
-              _this.qrcode()
+
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms))
+      }
+
+      await sleep(1000)
+
+      function getLog() {
+        _this.$axios.get("/bot/start/log?port=" + _this.bot.serversHttpPort + "&sessionId=" + _this.logSessionId).then((resp) => {
+          _this.logSessionId = resp["data"]["message"]
+          let logs = resp["data"]["data"]
+          if (logs.length !== 0) {
+            console.log(logs)
+            for (let i = 0; i < logs.length; i++) {
+              _this.logStr += logs[i] + "\n"
+              if (logs[i].indexOf("qrcode.png") !== -1) {
+                _this.qrcode()
+              }
             }
           }
-        }
-      })
+        })
+      }
+
+      window.setInterval(function () {
+        getLog()
+      }, 500);
     },
     qrcode() {
       let _this = this
@@ -123,10 +138,8 @@ export default {
       }
     }
   },
-
   created() {
     let _this = this
-
     _this.$axios.get("/bot/add/port?port=" + _this.bot["serversHttpPort"]).then((resp) => {
       _this.bot["serversHttpPort"] = resp["data"]["data"]
     })

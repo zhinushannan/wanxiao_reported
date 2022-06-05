@@ -17,7 +17,7 @@ def get_connect():
     connect_mysql, cursor, connect_redis, channel, connect_mq = None, None, None, None, None
     # get connection to mysql
     try:
-        connect_mysql = pymysql.connect(host='localhost', port=3306,
+        connect_mysql = pymysql.connect(host='172.17.0.2', port=3306,
                                         user='root', passwd='09140727', db='report')
     except OperationalError as e:
         close_connect(connect_mysql, cursor, connect_redis, connect_mq, channel)
@@ -28,7 +28,7 @@ def get_connect():
     cursor = connect_mysql.cursor()
 
     try:
-        connect_redis = redis.Redis(host="127.0.0.1", port=6379, decode_responses=True)
+        connect_redis = redis.Redis(host="172.17.0.3", port=6379, decode_responses=True)
         connect_redis.info()
     except (ResponseError, AuthenticationError) as e:
         close_connect(connect_mysql, cursor, connect_redis, connect_mq, channel)
@@ -39,7 +39,7 @@ def get_connect():
 
     try:
         auth =pika.PlainCredentials("test", "test")
-        connect_mq = pika.BlockingConnection(pika.ConnectionParameters(host="localhost", port=5672, credentials=auth))
+        connect_mq = pika.BlockingConnection(pika.ConnectionParameters(host="172.17.0.4", port=5672, credentials=auth))
         channel = connect_mq.channel()
         channel.queue_declare("wanxiao_report", durable=True)
     except:

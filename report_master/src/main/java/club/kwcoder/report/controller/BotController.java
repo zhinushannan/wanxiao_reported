@@ -46,14 +46,14 @@ public class BotController {
     }
 
     @RequestMapping(value = "start/log", method = RequestMethod.GET)
-    public ResultBean<List<LogDTO>> logs(@RequestParam(name = "port") String port,
+    public ResultBean<List<String>> logs(@RequestParam(name = "port") String port,
                                          @RequestParam(name = "sessionId", required = false) String sessionId) {
         return botService.logs(port, sessionId);
     }
 
     @RequestMapping(value = "groupList", method = RequestMethod.GET)
     public ResultBean<List<GroupDTO>> groupList(@RequestParam(name = "botId") String botId,
-                                                @RequestParam(name = "port") String port) {
+                                                @RequestParam(name = "port") Integer port) {
         return botService.groupList(botId, port);
     }
 

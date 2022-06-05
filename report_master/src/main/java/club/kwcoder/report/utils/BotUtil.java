@@ -35,7 +35,7 @@ public class BotUtil {
         return this.getBotPath(port) + "logs/" + LocalDate.now() + ".log";
     }
 
-    public List<String> getGroupList(String port) {
+    public List<String> getGroupList(Integer port) {
         List<String> groupIds = new ArrayList<>();
 
         String url = "http://localhost:" + port + "/get_group_list";

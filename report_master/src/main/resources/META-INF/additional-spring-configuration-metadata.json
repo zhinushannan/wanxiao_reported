@@ -54,5 +54,11 @@
       "name": "spider.url.appoint_clazz",
       "type": "java.lang.String",
       "description": "推送指定班级的url."
+    },
+    {
+      "name": "os",
+      "type": "java.lang.String",
+      "description": "操作系统版本."
     }
-  ] }
+  ]
+}

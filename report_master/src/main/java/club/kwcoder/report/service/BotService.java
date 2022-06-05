@@ -15,7 +15,7 @@ public interface BotService {
 
     ResultBean<List<Bot>> list();
 
-    ResultBean<List<LogDTO>> logs(String port, String sessionId);
+    ResultBean<List<String>> logs(String port, String sessionId);
 
     ResultBean<Integer> getAvailablePort(Integer port);
 
@@ -23,7 +23,7 @@ public interface BotService {
 
     ResultBean<String> qrcode(String port);
 
-    ResultBean<List<GroupDTO>> groupList(String botId, String port);
+    ResultBean<List<GroupDTO>> groupList(String botId, Integer port);
 
     ResultBean<String> restart(String port);
 }

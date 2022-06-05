@@ -11,4 +11,8 @@ public class LogDTO {
     private String level;
     private String content;
 
+    public String toLog() {
+        return this.time + " " + this.level + " " + this.content;
+    }
+
 }

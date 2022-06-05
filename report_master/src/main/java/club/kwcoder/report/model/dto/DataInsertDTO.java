@@ -9,7 +9,7 @@ public class DataInsertDTO {
     private String teacherName;
     private String deptId;
     private String groupId;
-    private String botPort;
+    private Integer botPort;
     private Integer delete;
 
 }
