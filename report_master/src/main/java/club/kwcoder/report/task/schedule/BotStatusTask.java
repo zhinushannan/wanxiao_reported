@@ -39,6 +39,7 @@ public class BotStatusTask {
                 e.printStackTrace();
                 flag = false;
             }
+            // 占用 flag = true， 需要保证status == 1
             if (!flag && bot.getStatus() == 1) {
                 bot.setStatus(0);
                 botDao.updateByPrimaryKey(bot);
