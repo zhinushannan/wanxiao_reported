@@ -23,7 +23,7 @@
 &emsp;&emsp;项目设计不容忍数据不完整，即如果班级信息与线上后台信息不符，将会直接报错终止运行。该项目架构如下：
 
 
-<div align="center"><img src="https://picgo.kwcoder.club/202208/202207251632440.png" alt="image-20220725163238483" style="width:50%;" /></div>
+<div align="center"><img src="https://pic-go-zhinushannan-1304360121.cos.ap-nanjing.myqcloud.com/202208/202207251632440.png" alt="image-20220725163238483" style="width:50%;" /></div>
 
 
 
