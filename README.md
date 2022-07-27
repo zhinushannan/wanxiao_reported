@@ -3,7 +3,7 @@
 
 [![](https://img.shields.io/badge/Author-zhinushannan-red)](https://github.com/zhinushannan/)
 [![](https://img.shields.io/github/license/zhinushannan/wanxiao_reported)](https://github.com/zhinushannan/wanxiao_reported/blob/main/LICENSE)
-[![https://www.oscs1024.com/platform/badge/zhinushannan/wanxiao_reported.svg](https://www.oscs1024.com/cd/1528036731427835904)]
+[![](https://www.oscs1024.com/platform/badge/zhinushannan/wanxiao_reported.svg)](https://www.oscs1024.com/cd/1528036731427835904)
 </div>
 
 
