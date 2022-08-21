@@ -36,6 +36,13 @@
 * [x] 支持多班级打卡
 * [x] 支持Bark推送程序异常
 
+### YouTube或Bilibili
+YouTube地址：https://www.youtube.com/watch?v=rkoMG7Smw6o
+Bilibili地址：https://www.bilibili.com/video/BV1Mg411r7EK
+<iframe width="1425" height="627" src="https://www.youtube.com/embed/rkoMG7Smw6o" title="轻量化健康打卡自动提醒机器人" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+
 ## 🛠项目维护
 
 目前此项目由江苏师范大学科文学院实干青年众创空间工作室维护。
