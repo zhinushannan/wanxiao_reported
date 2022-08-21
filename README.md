@@ -37,9 +37,10 @@
 * [x] 支持Bark推送程序异常
 
 ### YouTube或Bilibili
-YouTube地址：https://www.youtube.com/watch?v=rkoMG7Smw6o
-Bilibili地址：https://www.bilibili.com/video/BV1Mg411r7EK
-<iframe width="1425" height="627" src="https://www.youtube.com/embed/rkoMG7Smw6o" title="轻量化健康打卡自动提醒机器人" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+YouTube地址：https://www.youtube.com/watch?v=rkoMG7Smw6o   
+Bilibili地址：https://www.bilibili.com/video/BV1Mg411r7EK   
+
+[![](https://res.cloudinary.com/marcomontalbano/image/upload/v1661094833/video_to_markdown/images/youtube--rkoMG7Smw6o-c05b58ac6eb4c4700831b2b3070cd403.jpg)](https://www.youtube.com/watch?v=rkoMG7Smw6o "")
 
 
 
